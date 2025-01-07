@@ -3,13 +3,18 @@
 
 ### GROUP NAME HERE
 
-Group Members Here
+Group Members: Keith Hah, Edmund Liang, Stella Yampolsky
        
 ### Project Description:
 
-Explain what is this project.
+The project is a music player with features for making and handling playlists.
   
 ### Instructions:
 
 How does the user install/compile/run the program.
+
+The user will need to install CMUS and run the program executable.
+
 How does the user interact with this program?
+
+The user will use the terminal to interact with the program.
