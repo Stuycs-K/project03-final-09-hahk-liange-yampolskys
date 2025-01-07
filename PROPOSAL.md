@@ -2,28 +2,30 @@
 
 ## Group Members:
 
-names here.
+Stella Yampolsky, Keith Hah, Edmund Liang
        
 # Intentions:
-
-A statement of the problem you are solving and/or a high level description of the project.
-    
+Create a music player program. It will build on project 1 by incorporating a music player, saving the library data, and using actual music files. The user will be able to add files from the directory of the program to the library, and po>
+ 
 # Intended usage:
 
-A description as to how the project will be used (describe the user interface).
+Running the program will prompt the user to type in the commands for what they want to do, whether it's add songs, play songs, view their library, or view the song details.
   
 # Technical Details:
+The project will allocate memory and work with files (the music library), find information about files(song details), and use processes (playing the music with fork and execvp).
+Edmund: Execvp for the music player using CMUS – Console Music Player
+Stella: Music player interface, skipping, pausing, sorting, etc.
+Keith: Saving files, adding files, reading files.
+     
+We will be using arrays and linked lists.
+     
+The project will need the algorithms needed for the original project (searching, sorting, etc.) as well as algorithms for processes and saving the library data.
 
-A description of your technical design. This should include:
-   
-How you will be using the topics covered in class in the project.
-     
-How you are breaking down the project and who is responsible for which parts.
-  
-What data structures you will be using and how.
-     
-What algorithms and /or data structures you will be using, and how.
     
 # Intended pacing:
-
-A timeline with expected completion dates of parts of the project.
+PLACEHOLDER FROM SOLO PROJECT
+Skeletons and organization: 1/8
+Save library data: 1/11
+Add mp3 files from directory: 1/15
+Actually play the music: 1/19
+Playlists, stretch goals, debugging, panic induced all-nighters: 1/21
