@@ -7,7 +7,7 @@ This document must be updated daily by EACH group member.
 Create the file player.c, plan out usage in the comments.
 Time spent writing: 2 minutes
 Time spent wrangling pulsar: 10 minutes
-### 2024-01-08 1:47 pm
+### 2024-01-08 1:47 pm start methods
 Add node + library code from old project, begin modifying on branch
 Start skip + shuffle_next methods in player.c
 ## Edmund Liang
