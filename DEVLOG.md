@@ -22,3 +22,5 @@ Expanded description including how much time was spent on task.
 
 ### 2024-01-07 - Merged teams and planned functionality
 Revised proposal to accurately reflect new updated team and included new features like skip and looping songs. Discussed how to divide groupwork, and each member was then assigned a role.
+
+### 2024-01-08 - 
