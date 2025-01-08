@@ -20,7 +20,8 @@ Expanded description including how much time was spent on task.
 ### 2024-01-02 - Brief description
 Expanded description including how much time was spent on task.
 
-### 2024-01-07 - Merged teams and planned functionality
+### 2024-01-07, 2:50 PM - Merged teams and planned functionality
 Revised proposal to accurately reflect new updated team and included new features like skip and looping songs. Discussed how to divide groupwork, and each member was then assigned a role.
 
-### 2024-01-08 - 
+### 2024-01-08, 2:48 PM - Started save and load functions
+Created file.c and started working on save_library and load_library
