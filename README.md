@@ -14,7 +14,7 @@ The project is a music player with features for making and handling playlists. T
 
 How does the user install/compile/run the program?
 
-The user will need to install CMUS or mpg123 and run the program executable.
+The user will need to install mpg123 and run the program executable.
 
 How does the user interact with this program?
 
