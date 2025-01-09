@@ -3,6 +3,7 @@
 #include <string.h>
 #include "node.h"
 #include "library.h"
+#include "music_player.h"
 //reused music library code, modified nodes to hold files, ask for artist + title so most functions still work
 //maybe a default?
 
@@ -16,3 +17,15 @@ struct song_node shuffle_next(struct song_node ** library){
 	return start;
 }
 
+void shuffle(struct song_node ** library){
+	while(1){
+		file = struct song_node
+		play_file()
+	}
+}
+
+static void sighandler(int signo) {
+    if ( signo ==  ){
+    
+          }
+  }
