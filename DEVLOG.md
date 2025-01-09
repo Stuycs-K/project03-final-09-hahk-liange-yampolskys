@@ -10,6 +10,9 @@ Time spent wrangling pulsar: 10 minutes
 ### 2024-01-08 1:47 pm start methods
 Add node + library code from old project, begin modifying on branch
 Start skip + shuffle_next methods in player.c
+### 2024-01-09 1:47 pm modify old code, shuffle
+Modify node + library code, work on shuffle method
+read Edmund's code to understand how files are handled
 
 ## Edmund Liang
 
