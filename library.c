@@ -14,17 +14,17 @@ struct song_node **init() {
     return library;
 }
 
-void add(struct song_node **library, char *artist, char *title) {
+void add(struct song_node **library, char *artist, int fd, char *title) {
     int index;
     if (artist[0] >= 'A' && artist[0] <= 'Z') {
         index = artist[0] - 'A';
     } else {
         index = 26; // For non-letter artists
     }
-    library[index] = insert_alph(library[index], artist, title);
+    library[index] = insert_alph(library[index], artist, fd,  title);
 }
 
-struct song_node *search_song(struct song_node **library, char *artist, char *title) {
+struct song_node *search_song(struct song_node **library, char *artist,int fd, char *title) {
     int index;
     if (artist[0] >= 'A' && artist[0] <= 'Z') {
         index = artist[0] - 'A';
