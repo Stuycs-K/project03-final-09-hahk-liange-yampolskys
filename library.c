@@ -52,16 +52,16 @@ void print_artist(struct song_node ** library, char* artist){
     struct song_node * singer = search_artist(library, artist);
     if(singer ==NULL) return;
     printf("[");
-    
+
     while(singer != NULL){
         if(strcmp(singer->artist, artist) == 0){
-            
+
             printf(" {");
             print(singer);
             printf("} ");
-            
+
             singer = singer->next;
-            
+
             if(singer != NULL){
                 if(strcmp(singer->artist, artist) == 0) printf("|");
             }
@@ -69,7 +69,7 @@ void print_artist(struct song_node ** library, char* artist){
             //printf("reaches end of pass\n");
         }
         singer = singer->next;
-         
+
     }
     printf("]");
 }
@@ -80,7 +80,7 @@ void print_library(struct song_node ** library){
             if(i != 26) printf("%c: ", i+65);
           print_letter(library, i + 65);
            printf("\n");
-             
+
         }
     }
 }
@@ -92,7 +92,7 @@ int numFilled(struct song_node ** library){
     struct song_node * curr;
     int size = 0;  // need to take care of none filled
 
-    
+
     for(int i = 0; i<27;i++){
         curr = *(library + i);
         if (listSize(curr) != 0) size += 1;
@@ -102,7 +102,7 @@ int numFilled(struct song_node ** library){
 int *filledSlots(struct song_node ** library){
     struct song_node * curr;
     int size = numFilled(library);
-    
+
     int * indices = malloc(size*sizeof(int));
     if(indices == NULL) return NULL; // figure out what do
 
@@ -114,7 +114,7 @@ int *filledSlots(struct song_node ** library){
             count += 1;
         }
     }
-    
+
     return indices;
 }
 void shuffle (struct song_node ** library, int n){
@@ -150,11 +150,10 @@ int delete_song(struct song_node ** library, char* artist, char* title ){
 }
 
 void reset(struct song_node ** library){
-    for(int i = 0; i< 27; i++){
-        if(library[i] != NULL) {
-            free_list(library[i]);
-            //printf("just freed %d", i);
-        }
+  for (int i = 0; i < 27; i++) {
+    if (library[i] != NULL) {
+      free_list(library[i]);
+      library[i] = NULL;
     }
-    free(library);
+  }
 }

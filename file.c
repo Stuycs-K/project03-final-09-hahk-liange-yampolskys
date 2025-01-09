@@ -22,7 +22,9 @@ void save_library(struct song_node ** library, char *filename){
     struct song_node *curr = library[i];
     while(curr){
       write(musicFile, curr->artist, sizeof(curr->artist));
+      write(musicFile," - " , 3);
       write(musicFile, curr->title, sizeof(curr->title));
+      write(musicFile," \n" , 2);
       curr = curr->next;
     }
   }

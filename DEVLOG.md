@@ -28,4 +28,13 @@ Expanded description including how much time was spent on task.
 Revised proposal to accurately reflect new updated team and included new features like skip and looping songs. Discussed how to divide groupwork, and each member was then assigned a role.
 
 ### 2024-01-08, 2:48 PM - Started save and load functions
-Created file.c and started working on save_library and load_library. Used the library.c and node.c from old project as reference and created makefile and main.c. Encountered segfault when loading library, will fix later.
+Created file.c and started working on save_library and load_library.
+
+### 2024-01-09, 12:00 AM - Worked on save and load functions
+Used the library.c and node.c from old project as reference and created makefile and main.c. Finished up save_library
+
+### 2024-01-09, 1:30 AM - Worked on save and load functions
+Finished up load_library and went over save_library. Wrote data to txt file in main.c. Encountered segfault when loading library, will fix later.
+
+### 2024-01-09, 2:46 P.M. - Debugged save_library
+Fixed segfault caused by reset function. Fixed the format of the songs that were saved to the text file.
