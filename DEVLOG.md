@@ -13,11 +13,11 @@ Start skip + shuffle_next methods in player.c
 
 ## Edmund Liang
 
-### 2024-01-02 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-07 - Add music_player files
+Make the music_player .c and .h files and look into how to use mpg123.
 
-### 2024-01-07 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-08 - Add basic music playing capabilities
+Add a function to play a file using mpg123 using forking and execvp, but prints out "Can't set terminal attributes".
 
 ## Keith Hah
 
