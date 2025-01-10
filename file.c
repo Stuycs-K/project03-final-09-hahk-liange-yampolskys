@@ -21,9 +21,9 @@ void save_library(struct song_node ** library, char *filename){
   for(int i = 0; i < 27; i++){
     struct song_node *curr = library[i];
     while(curr){
-      write(musicFile, curr->artist, sizeof(curr->artist));
-      write(musicFile," - " , 3);
-      write(musicFile, curr->title, sizeof(curr->title));
+      write(musicFile, curr->artist, strlen(curr->artist));
+      write(musicFile,"-" , 1);
+      write(musicFile, curr->title, strlen(curr->title));
       write(musicFile," \n" , 2);
       curr = curr->next;
     }
