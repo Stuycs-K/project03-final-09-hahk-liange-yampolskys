@@ -2,7 +2,14 @@
 #include "node.h"
 #include "music_player.h"
 #include "player.h"
-int main(int argc, char* argv){
-
+int main(){
+char *line;
+printf("musicplayer");
+while(1){
+	line = readstdin();
+	if(line == "skip"){
+		skip()
+	}
+}
 
 }

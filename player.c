@@ -31,7 +31,8 @@ struct song_node *shuffle_next(struct song_node **library) {
     return chooseRandom(library[bucket]);
 }
 
-void shuffle_play(struct song_node **library) {
+void shuffle_play(struct song_node **library) {\
+//wait is this compatible with group code? discuss.
     struct song_node *current;
     pid_t player_pid;
 
