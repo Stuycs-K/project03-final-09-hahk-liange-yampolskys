@@ -42,3 +42,6 @@ Finished up load_library and went over save_library. Wrote data to txt file in m
 
 ### 2024-01-09, 2:46 P.M. - Debugged save_library
 Fixed segfault caused by reset function. Fixed the format of the songs that were saved to the text file.
+
+### 2024-01-10, 12:42 A.M - Debugged library functions
+Fixed txt file format using strlen, error with loading the library correctly. Installed mpg123, not sure if it works or not.
