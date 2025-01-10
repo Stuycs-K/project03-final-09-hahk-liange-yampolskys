@@ -66,9 +66,9 @@ struct song_node * find_song(struct song_node * list, char *artist, char *title)
         printf("reached end of pass\n");
         list = list->next;
     }
-        
-        
-        
+
+
+
     return NULL;
 }
 
@@ -91,7 +91,7 @@ struct song_node * chooseRandom(struct song_node * list){
         list = list-> next;
     }
     return list;
-    
+
 }
 // HELPER/DEBUGGING METHOD
 int songIndex(struct song_node *list, char *artist, char *title){
@@ -107,7 +107,7 @@ int songIndex(struct song_node *list, char *artist, char *title){
 }
 
 struct song_node * remove_node_by_index(struct song_node * list, int index){
-    
+
     if(index < 0 || list == NULL){
         return list;
     }
