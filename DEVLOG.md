@@ -3,17 +3,19 @@
 This document must be updated daily by EACH group member.
 ## Stella Yampolsky
 
-### 2024-01-07 Create files
+### 2024-01-07 - Create files
 Create the file player.c, plan out usage in the comments.
 Time spent writing: 2 minutes
 Time spent wrangling pulsar: 10 minutes
-### 2024-01-08 1:47 pm start methods
+### 2024-01-08 1:47 pm - start methods
 Add node + library code from old project, begin modifying on branch
 Start skip + shuffle_next methods in player.c
-### 2024-01-09 1:47 pm modify old code, shuffle
+### 2024-01-09 1:47 pm - modify old code, shuffle
 Modify node + library code, work on shuffle method
 read Edmund's code to understand how files are handled
-
+### 2024-01-09 11:45 pm Finish shuffle, pause signals
+Finished the shuffle code
+Did research on signals, wrote pause with sighandler method (maybe, needs further testing)
 ## Edmund Liang
 
 ### 2024-01-07 - Add music_player files
