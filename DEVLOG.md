@@ -15,6 +15,9 @@ Modify node + library code, work on shuffle method read Edmund's code to underst
 ### 2025-01-09 11:45 pm Finish shuffle, pause signals
 Finished the shuffle code Did research on signals, wrote pause with sighandler method (maybe, needs further testing)
 
+###1/10 2:50
+header files read code cleaned player.c (rewrite later)
+
 ## Edmund Liang
 
 ### 2025-01-07 - Add music_player files
