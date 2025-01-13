@@ -1,22 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "node.h"
-<<<<<<< HEAD
-#include "music_player.h"
-#include "player.h"
-int main(){
-char *line;
-printf("musicplayer");
-while(1){
-	line = readstdin();
-	if(line == "skip"){
-		skip()
-	}
-}
-=======
 #include "library.h"
 #include "file.h"
+#include "music_player.h"
+#include "player.h"
 
 int main(){
     struct song_node **library = init();
@@ -25,7 +10,6 @@ int main(){
     add(library, "Pink Floyd", "Comfortably Numb");
     add(library, "The Rolling Stones", "Paint It Black");
     add(library, "Pink Floyd", "Wish You Were Here");
->>>>>>> origin/khah
 
     printf("Music Library:\n");
     print_library(library);
