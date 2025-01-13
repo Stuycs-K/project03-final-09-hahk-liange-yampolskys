@@ -24,7 +24,7 @@ void save_library(struct song_node ** library, char *filename){
       write(musicFile, curr->artist, strlen(curr->artist));
       write(musicFile," , " , 3);
       write(musicFile, curr->title, strlen(curr->title));
-      write(musicFile,"\n" , 2);
+      write(musicFile," | " , 3);
       curr = curr->next;
     }
   }
@@ -42,7 +42,7 @@ void load_library(struct song_node ** library, char *filename){
     exit(1);
   }
 
-  while((bytes = read(musicFile, temp.artist, sizeof(temp.artist)-1)) > 0){
+  while((bytes = read(musicFile, temp.artist, sizeof(temp.artist)- 1)) > 0){
     temp.artist[bytes] = '\0';
     bytes = read(musicFile, temp.title, sizeof(temp.title)-1);
     if(bytes <= 0){
