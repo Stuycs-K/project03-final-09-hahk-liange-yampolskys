@@ -14,7 +14,7 @@ Running the program will prompt the user to type in the commands for what they w
 # Technical Details:
 The project will allocate memory and work with files (the music library), find information about files(song details), and use processes (playing the music with fork and execvp).
 
-Edmund: Execvp for the music player using CMUS – Console Music Player
+Edmund: Execvp for the music player using mpg123
 Stella: Music player interface, skipping, pausing, sorting, etc.
 Keith: Saving files, adding files, reading files.
 
