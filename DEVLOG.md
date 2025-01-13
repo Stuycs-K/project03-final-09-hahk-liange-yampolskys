@@ -51,3 +51,6 @@ Fixed txt file format using strlen, error with loading the library correctly. In
 
 ### 2025-01-10, 2:48 P.M - Started add library function
 Temporarily ignoring load_library error, started on adding songs function.
+
+### 2025-01-13, 2:47 P.M - Located bug in load_library
+Found reason for the bug, which was due to the size of bytes occupied by the additional write statements. Also noticed different output when using sizeof vs strlen. Now it loads all the songs, but doesn't sort them properly.
