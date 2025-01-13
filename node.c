@@ -4,17 +4,16 @@
 #include <time.h>
 #include "node.h"
 
-struct song_node *createnode(char *artist, char *title, int fd,  struct song_node *next) {
+struct song_node *createnode(char *artist, char *title, char *filename, struct song_node *next) {
     struct song_node *x = malloc(sizeof(struct song_node));
     if (!x) return NULL;
     strcpy(x->artist, artist);
     strcpy(x->title, title);
-    x->fd = fd;
     x->next = next;
     return x;
 }
 void print(struct song_node * m){
-    printf("%s , %s", m->artist, m->title);
+    printf("%s , %s, %s", m->artist, m->title, m->filename);
 }
 
 
@@ -32,8 +31,8 @@ void print_list(struct song_node *list) {
     printf("} ]");
 }
 
-struct song_node *insert_front(struct song_node *list, char *artist, char *title, int fd) {
-    return createnode(artist, title,fd, list);
+struct song_node *insert_front(struct song_node *list, char *artist, char*filename, char *title) {
+    return createnode(artist, title,filename, list);
 }
 
 struct song_node *free_list(struct song_node *list) {
@@ -58,17 +57,18 @@ struct song_node * find_artist(struct song_node * list, char *artist){
     return NULL;
 }
 
-struct song_node * find_song(struct song_node * list, char *artist, char *title){
+struct song_node * find_song(struct song_node * list, char *artist, char *title, char*filename){
+    //printf("reached end of pass\n");
     while(list != NULL){
-            if(strcmp(list->artist, artist) == 0 && strcmp(list->title, title) == 0){
+            if(strcmp(list->artist, artist) == 0 && strcmp(list->title, title) == 0 &&  strcmp(list->filename, filename) == 0){
                 return list;
             }
         printf("reached end of pass\n");
         list = list->next;
     }
-        
-        
-        
+
+
+
     return NULL;
 }
 
@@ -91,7 +91,7 @@ struct song_node * chooseRandom(struct song_node * list){
         list = list-> next;
     }
     return list;
-    
+
 }
 // HELPER/DEBUGGING METHOD
 int songIndex(struct song_node *list, char *artist, char *title){
@@ -107,7 +107,7 @@ int songIndex(struct song_node *list, char *artist, char *title){
 }
 
 struct song_node * remove_node_by_index(struct song_node * list, int index){
-    
+
     if(index < 0 || list == NULL){
         return list;
     }
@@ -136,8 +136,8 @@ int compare(struct song_node *a, struct song_node *b) {
     return strcasecmp(a->title, b->title);
 }
 
-struct song_node *insert_alph(struct song_node *list, char *artist, int fd, char *title) {
-    struct song_node *new = createnode(artist, title, fd, NULL);
+struct song_node *insert_alph(struct song_node *list, char *artist, char* filename,  char *title) {
+    struct song_node *new = createnode(artist, title,filename, NULL);
     if (!new) return list;
     if (!list || compare(new, list) < 0) {
         new->next = list;
@@ -152,6 +152,6 @@ struct song_node *insert_alph(struct song_node *list, char *artist, int fd, char
     return list;
 }
 
-struct song_node * remove_by_song(struct song_node *list, char *artist, int fd,  char *title){
-    return remove_node_by_index(list, songIndex(list, artist, fd, title));
+struct song_node * remove_by_song(struct song_node *list, char *artist, char *title, char*filename){
+    return remove_node_by_index(list, songIndex(list, artist, title, filename));
 }
