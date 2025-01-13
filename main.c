@@ -8,6 +8,7 @@
 int main(){
     struct song_node **library = init();
     add(library, "The Beatles", "Hey Jude");
+    add(library, "RHCP", "Can't Stop");
     add(library, "The Beatles", "Let It Be");
     add(library, "Pink Floyd", "Comfortably Numb");
     add(library, "The Rolling Stones", "Paint It Black");

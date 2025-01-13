@@ -5,10 +5,9 @@
 Stella Yampolsky, Keith Hah, Edmund Liang
 
 # Intentions:
-Create a music player program. It will build on project 1 by incorporating a music player, saving the library data, and using actual music files. The user will be able to add files from the directory of the program to the library, and po>
+Create a music player program. It will build on project 1 by incorporating a music player, saving the library data, and using actual music files. The user will be able to add files from the directory of the program to the library, and play them.
 
 # Intended usage:
-
 Running the program will prompt the user to type in the commands for what they want to do, whether it's add songs, play songs, view their library, or view the song details.
 
 # Technical Details:
