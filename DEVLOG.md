@@ -26,6 +26,15 @@ Make the music_player .c and .h files and look into how to use mpg123.
 ### 2025-01-08 - Add basic music playing capabilities
 Add a function to play a file using mpg123 using forking and execvp, but prints out "Can't set terminal attributes".
 
+### 2025-01-09 - Use system instead of execvp to specify redirect
+Switch to system instead of execvp to easily specify redirections, will probably later switch to execvp and redirection.
+
+### 2025-01-10 - Add setup for communicating between program and mpg123 using pipes
+Use pipes to read from and write to the player for more fine-tuned control.
+
+### 2025-01-11, 2:36 PM - Split into multiple functions
+Split the program into multiple functions so that they can be easily called from another file.
+
 ## Keith Hah
 
 ### 2025-01-02 - Brief description
