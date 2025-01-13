@@ -6,17 +6,20 @@ This document must be updated daily by EACH group member.
 ### 2025-01-07 - Create files
 Create the file player.c, plan out usage in the comments. Time spent writing: 2 minutes Time spent wrangling pulsar: 10 minutes
 
-### 2025-01-08 1:47 pm - start methods
+### 2025-01-08 2:47 pm - start methods
 Add node + library code from old project, begin modifying on branch Start skip + shuffle_next methods in player.c
 
-### 2025-01-09 1:47 pm - modify old code, shuffle
+### 2025-01-09 2:47 pm - modify old code, shuffle
 Modify node + library code, work on shuffle method read Edmund's code to understand how files are handled
 
 ### 2025-01-09 11:45 pm Finish shuffle, pause signals
 Finished the shuffle code Did research on signals, wrote pause with sighandler method (maybe, needs further testing)
 
-###1/10 2:50
-header files read code cleaned player.c (rewrite later)
+### 1/10 2:50 pm
+write header files read group code clean player.c (rewrite later)
+
+### 1/13 2:48 pm
+Rewrite library, node, main code to be compatible, need to test
 
 ## Edmund Liang
 
