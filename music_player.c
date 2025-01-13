@@ -45,6 +45,14 @@ void play_file(char * file_name) {
   write_player(buff);
 }
 
+void pause_playback() {
+  write_player("P\n");
+}
+
+void stop_playback() {
+  write_player("S\n");
+}
+
 int check_finished_playing(char * b) {
   return b[1] == 'P' && b[3] == '0';
 }

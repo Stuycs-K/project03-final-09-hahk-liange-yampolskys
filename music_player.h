@@ -19,6 +19,8 @@ void disconnect_player();
 void read_player(char * b);
 void write_player(char * b);
 void play_file(char * file_name);
+void pause_playback();
+void stop_playback();
 int check_finished_playing(char * b);
 
 #endif
