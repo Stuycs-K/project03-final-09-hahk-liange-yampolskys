@@ -70,3 +70,11 @@ void loop(struct song_node ** library, struct song_node song){
 		
 }
 
+//queueing songs:
+/*
+can add songs to queue while playing
+when songs are added, first queue method is called, then when queue is finished, calls shuffle
+*/
+void queue_songs(struct song_node **library, struct song_node song){
+	
+}
