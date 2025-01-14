@@ -15,11 +15,16 @@ Modify node + library code, work on shuffle method read Edmund's code to underst
 ### 2025-01-09 11:45 pm Finish shuffle, pause signals
 Finished the shuffle code Did research on signals, wrote pause with sighandler method (maybe, needs further testing)
 
-### 1/10 2:50 pm
+### 2025-01-10 2:50 pm
 write header files read group code clean player.c (rewrite later)
 
-### 1/13 2:48 pm
+### 2025-01-13 2:48 pm
 Rewrite library, node, main code to be compatible, need to test
+
+### 2025-01-14 2:49 pm shuffle skip loop queue
+Rewrite shuffle + skip to be compatible with music_player
+Write loop
+Plan queue
 
 ## Edmund Liang
 
