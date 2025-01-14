@@ -69,3 +69,6 @@ Found reason for the bug, which was due to the size of bytes occupied by the add
 
 ### 2025-01-14, 12:43 A.M - Recoded load_library
 Decided to make a menu for loading, adding, saving, etc. Changed main.c to print the menu out and use fgets for user input. Changed load_library to use buffer to handle file input. Also added add_library. Next steps will be to finish main.c and other library functions.
+
+### 2025-01-14, 2:48 P.M - Worked on user functions in main.c
+Added new functions to work on like playing specific songs or making new playlists. Finished the add song, save playlist, and view playlist. Almost done with looking up a song.
