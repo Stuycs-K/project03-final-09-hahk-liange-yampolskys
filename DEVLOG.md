@@ -66,3 +66,6 @@ Temporarily ignoring load_library error, started on adding songs function.
 
 ### 2025-01-13, 2:47 P.M - Located bug in load_library
 Found reason for the bug, which was due to the size of bytes occupied by the additional write statements. Also noticed different output when using sizeof vs strlen. Now it loads all the songs, but doesn't sort them properly.
+
+### 2025-01-14, 12:43 A.M - Recoded load_library
+Decided to make a menu for loading, adding, saving, etc. Changed main.c to print the menu out and use fgets for user input. Changed load_library to use buffer to handle file input. Also added add_library. Next steps will be to finish main.c and other library functions.
