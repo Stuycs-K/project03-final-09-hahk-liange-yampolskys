@@ -22,44 +22,53 @@ void save_library(struct song_node ** library, char *filename){
     struct song_node *curr = library[i];
     while(curr){
       write(musicFile, curr->artist, strlen(curr->artist));
-      write(musicFile," , " , 3);
+      write(musicFile," | " , 1);
       write(musicFile, curr->title, strlen(curr->title));
-      write(musicFile," | " , 3);
+      write(musicFile,"\n" , 1);
       curr = curr->next;
     }
   }
 
   close(musicFile);
+  printf("Library saved to %s\n", filename);
 }
 
 void load_library(struct song_node ** library, char *filename){
-  //char artist[100], title[100];
-  struct song_node temp;
-  int bytes, index;
+  char line[256], buffer[1];
+  int index = 0;
+  int bytes = 0;
+  int list;
   int musicFile = open(filename, O_RDONLY);
   if(musicFile == -1){
-    perror("open file fail (load)");
-    exit(1);
+    perror("No library detected. New library created\n");
+    return;;
   }
 
-  while((bytes = read(musicFile, temp.artist, sizeof(temp.artist)- 1)) > 0){
-    temp.artist[bytes] = '\0';
-    bytes = read(musicFile, temp.title, sizeof(temp.title)-1);
-    if(bytes <= 0){
-      break;
-    }
-    temp.title[bytes] = '\0';
-
-    if(temp.artist[0] >= 'A' && temp.artist[0] <= 'Z'){
-      index = temp.artist[0] - 'A';
+  while((bytes = read(musicFile, buffer, 1)) > 0){
+    if(buffer[0] == '\n' || index >= sizeof(line) - 1){
+      line[index] = '\0';
+      char *divide = strchr(line, '|');
+      if(divide){
+        *divide = '\0';
+        char *artist = line;
+        char *title = divide + 1;
+        if(artist[0] >= 'A' && artist[0] <= 'Z'){
+          list = artist[0] - 'A';
+        }
+        else{
+          list = 26;
+        }
+        library[list] = insert_alph(library[list], artist, title);
+      }
+      index = 0;
     }
     else{
-      index = 26;
+      line[index++] = buffer[0];
     }
-    library[index] = insert_alph(library[index], temp.artist, temp.title);
   }
-
+ 
   close (musicFile);
+  printf("Library loaded from %s", filename);
 }
 /*
 void add_library(struct song_node **library, char *filename){
