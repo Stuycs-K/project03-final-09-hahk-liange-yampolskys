@@ -27,7 +27,7 @@ char *shuffle_next(struct song_node **library) {
     return chooseRandom(library[bucket])->filename;
 }
 
-void shuffle_play(struct song_node **library) {\
+void shuffle_play(struct song_node **library) {
 //wait is this compatible with group code? discuss.
     struct song_node *current;
     pid_t player_pid;
@@ -52,4 +52,21 @@ void shuffle_play(struct song_node **library) {\
             break;
         }
     }
+void loop(struct song_node ** library, struct song_node song){
+	pid_t player_pid;
+	signal(SIGINT, sighandler);
+	printf("looping %s - %s\n", song->artist, song->title);
+	while(1){
+		 player_pid = fork();
+            if (player_pid == 0) {
+                play_file(song->filename);
+                exit(0);
+            }
+             else {
+                perror("Fork failed");
+                return;
+            }
+	}
+		
 }
+
