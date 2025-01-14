@@ -53,8 +53,30 @@ void stop_playback() {
   write_player("S\n");
 }
 
+void jump_absolute(float seconds) {
+  sprintf(buff, "J %fs\n", seconds);
+  write_player(buff);
+}
+
+void jump_relative(float seconds) {
+  sprintf(buff, seconds > 0 ? "J +%fs\n" : "J -%fs\n", seconds);
+  write_player(buff);
+}
+
+void set_volume(float percent) {
+  sprintf(buff, "V %f\n", percent);
+  write_player(buff);
+}
+
 int check_finished_playing(char * b) {
   return b[1] == 'P' && b[3] == '0';
+}
+
+struct frame_info check_frame_info(char * b) {
+  struct frame_info ret;
+  if (b[1] != 'F') return ret;
+  sscanf(b, "@F %d %d %f %f", (int *)&ret, (int *)&ret + 1, (float *)&ret + 2, (float *)&ret + 3);
+  return ret;
 }
 
 int main() {
@@ -64,6 +86,8 @@ int main() {
     while (1) {
         read_player(buff);
         if (check_finished_playing(buff)) break;
+        struct frame_info r = check_frame_info(buff);
+        printf("f %d %d %f %f\n", r.frames, r.frames_left, r.seconds, r.seconds_left);
     }
     disconnect_player();
   }
