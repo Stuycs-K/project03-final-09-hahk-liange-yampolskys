@@ -42,6 +42,7 @@ int main(){
                 }
             }
             add(library, artist, title);
+            printf("Song added\n");
         }
         else if(option == 2){
 

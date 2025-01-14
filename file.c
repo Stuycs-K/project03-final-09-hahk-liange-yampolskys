@@ -70,16 +70,18 @@ void load_library(struct song_node ** library, char *filename){
   close (musicFile);
   printf("Library loaded from %s", filename);
 }
-/*
-void add_library(struct song_node **library, char *filename){
-    int musicFile = open(filename, O_RDONLY, 0644);
-    int bytes;
-    int char artist[100], title[100];
-    if(musicFile == -1){
-      perror("open musicfile fail");
-      exit(1);
+
+void add_library(struct song_node **library, char *artist, char *title){
+    int list;
+    if(artist[0] >= 'A' && artist[0] <= 'Z'){
+      list = artist[0] - 'A'; 
+    } 
+    else{
+      list = 26; 
     }
 
-}*/
+    library[list] = insert_alph(library[list], artist, title);
+    printf("Song added: %s , %s\n", artist, title);
+}
 
 //Saving files, adding files, reading files.
