@@ -30,7 +30,7 @@ void save_library(struct song_node ** library, char *filename){
   }
 
   close(musicFile);
-  printf("Library saved to %s\n", filename);
+  //printf("Library saved to %s\n", filename);
 }
 
 void load_library(struct song_node ** library, char *filename){
@@ -66,7 +66,7 @@ void load_library(struct song_node ** library, char *filename){
       line[index++] = buffer[0];
     }
   }
- 
+
   close (musicFile);
   printf("Library loaded from %s", filename);
 }
@@ -74,10 +74,10 @@ void load_library(struct song_node ** library, char *filename){
 void add_library(struct song_node **library, char *artist, char *title){
     int list;
     if(artist[0] >= 'A' && artist[0] <= 'Z'){
-      list = artist[0] - 'A'; 
-    } 
+      list = artist[0] - 'A';
+    }
     else{
-      list = 26; 
+      list = 26;
     }
 
     library[list] = insert_alph(library[list], artist, title);
