@@ -25,7 +25,8 @@ Rewrite library, node, main code to be compatible, need to test
 Rewrite shuffle + skip to be compatible with music_player
 Write loop
 Plan queue
-
+### 2025-01-15 2:21 am
+Fix + debug, write queue
 ## Edmund Liang
 
 ### 2025-01-07 - Add music_player files
@@ -77,3 +78,4 @@ Decided to make a menu for loading, adding, saving, etc. Changed main.c to print
 
 ### 2025-01-14, 2:48 P.M - Worked on user functions in main.c
 Added new functions to work on like playing specific songs or making new playlists. Finished the add song, save playlist, and view playlist. Almost done with looking up a song.
+
