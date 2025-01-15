@@ -8,66 +8,128 @@
 #include "library.h"
 #include "music_player.h"
 
-static int pause_flag = 0;
-
 static void sighandler(int signo) {
-    if (signo == SIGUSR1) {
-        pause_flag = !pause_flag;
-    } else if (signo == SIGINT) {
+    if (signo == SIGINT) {
         printf("\nTerminating playback...\n");
         exit(0);
     }
 }
 
-
-struct song_node *skip(struct song_node *current) {
-    if (current) {
-        return current->next;
+char* skip(struct song_node *current) {
+    if (current && current->next) {
+        return current->next->filename;
     }
     return NULL;
 }
 
-struct song_node *shuffle_next(struct song_node **library) {
+struct song_node* shuffleNext(struct song_node **library) {
     int bucket = rand() % 27;
     return chooseRandom(library[bucket]);
 }
 
-void shuffle_play(struct song_node **library) {
+void shufflePlay(struct song_node **library) {
     struct song_node *current;
-    pid_t player_pid;
+    pid_t playerPid;
 
-    signal(SIGUSR1, sighandler);
     signal(SIGINT, sighandler);
 
     while (1) {
-        current = shuffle_next(library);
+        current = shuffleNext(library);
         if (current) {
             printf("Now playing: %s - %s\n", current->artist, current->title);
-            player_pid = fork();
-            if (player_pid == 0) {
-                play_file(current->filename);
+            playerPid = fork();
+            if (playerPid == 0) {
+                playFile(current->filename);
                 exit(0);
-            } else if (player_pid > 0) {
-                while (1) {
-                    if (pause_flag) {
-                        kill(player_pid, SIGSTOP);
-                        while (pause_flag) {
-                            pause();
-                        }
-                        kill(player_pid, SIGCONT);
-                    }
-                    int status;
-                    if (waitpid(player_pid, &status, WNOHANG) > 0) {
-                        break;
-                    }
-                }
-            } else {
+            } 
+            else if (playerPid > 0) {
+                int status;
+                waitpid(playerPid, &status, 0);
+            } 
+            else {
                 perror("Fork failed");
                 return;
             }
-        } else {
+        } 
+        else {
             printf("No songs available.\n");
             break;
         }
+    }
+}
+
+void loop(struct song_node **library, struct song_node *song) {
+    pid_t playerPid;
+
+    signal(SIGINT, sighandler);
+
+    while (1) {
+        playerPid = fork();
+        if (playerPid == 0) {
+            playFile(song->filename);
+            exit(0);
+        } 
+        else if (playerPid > 0) {
+            int status;
+            waitpid(playerPid, &status, 0);
+        } 
+        else {
+            perror("Fork failed");
+            return;
+        }
+    }
+}
+
+void queueSongs(struct song_node **library, struct song_node *queueHead) {
+    struct song_node *current = queueHead;
+    pid_t playerPid;
+
+    signal(SIGINT, sighandler);
+
+    while (current) {
+        playerPid = fork();
+        if (playerPid == 0) {
+            playFile(current->filename);
+            exit(0);
+        } 
+        else if (playerPid > 0) {
+            int status;
+            waitpid(playerPid, &status, 0);
+            current = current->next;
+        } 
+        else {
+            perror("Fork failed");
+            return;
+        }
+    }
+}
+
+void addToQueue(struct song_node **queueHead, struct song_node *newSong) {
+    struct song_node *current = *queueHead;
+
+    if (!newSong) {
+        printf("Invalid song. Cannot add to queue.\n");
+        return;
+    }
+
+    struct song_node *songToAdd = malloc(sizeof(struct song_node));
+    if (!songToAdd) {
+        perror("Failed to allocate memory for the new song in the queue");
+        return;
+    }
+
+    strcpy(songToAdd->title, newSong->title);
+    strcpy(songToAdd->artist, newSong->artist);
+    strcpy(songToAdd->filename, newSong->filename);
+    songToAdd->next = NULL;
+
+    if (!*queueHead) {
+        *queueHead = songToAdd;
+    } 
+    else {
+        while (current->next) {
+            current = current->next;
+        }
+        current->next = songToAdd;
     }
 }
