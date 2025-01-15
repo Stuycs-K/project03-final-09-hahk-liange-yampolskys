@@ -39,7 +39,7 @@ void shufflePlay(struct song_node **library) {
             printf("Now playing: %s - %s\n", current->artist, current->title);
             playerPid = fork();
             if (playerPid == 0) {
-                playFile(current->filename);
+                play_file(current->filename);
                 exit(0);
             } 
             else if (playerPid > 0) {
@@ -66,7 +66,7 @@ void loop(struct song_node **library, struct song_node *song) {
     while (1) {
         playerPid = fork();
         if (playerPid == 0) {
-            playFile(song->filename);
+            play_file(song->filename);
             exit(0);
         } 
         else if (playerPid > 0) {
@@ -89,7 +89,7 @@ void queueSongs(struct song_node **library, struct song_node *queueHead) {
     while (current) {
         playerPid = fork();
         if (playerPid == 0) {
-            playFile(current->filename);
+            play_file(current->filename);
             exit(0);
         } 
         else if (playerPid > 0) {
