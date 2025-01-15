@@ -19,12 +19,6 @@ static void sighandler(int signo) {
     }
 }
 
-void play_file(char *filename) {
-    char *args[] = {"mpg123", filename, NULL};
-    execvp("mpg123", args);
-    perror("Error: execvp failed");
-    exit(1);
-}
 
 struct song_node *skip(struct song_node *current) {
     if (current) {
