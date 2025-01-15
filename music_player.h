@@ -14,6 +14,8 @@
 struct frame_info {
   int frames;
   int frames_left;
+  float seconds;
+  float seconds_left;
 };
 
 int to_player, from_player;

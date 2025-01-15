@@ -74,8 +74,9 @@ int check_finished_playing(char * b) {
 
 struct frame_info * check_frame_info(char * b) {
   if (b[1] != 'F') return NULL;
+  printf("<%s>\n", b);
   struct frame_info * ret;
-  sscanf(b + 3, "%d %d", (int *)ret, (int *)ret + 1);
+  sscanf(b + 3, "%d %d %f %f\n", (int *)ret, (int *)ret + 1, (float *)ret + 2, (float *)ret + 3);
   return ret;
 }
 
@@ -89,7 +90,7 @@ int main() {
         struct frame_info * i = check_frame_info(buff);
         if (i != NULL) {
             struct frame_info r = *i;
-            printf("%d frames, %d frames left\n", r.frames, r.frames_left);
+            printf("%d frames, %d frames left, %f seconds, %f seconds left\n", r.frames, r.frames_left, r.seconds, r.seconds_left);
         }
     }
     disconnect_player();
