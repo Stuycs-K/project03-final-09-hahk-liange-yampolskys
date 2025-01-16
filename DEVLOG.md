@@ -25,10 +25,15 @@ Rewrite library, node, main code to be compatible, need to test
 Rewrite shuffle + skip to be compatible with music_player
 Write loop
 Plan queue
+
 ### 2025-01-15 2:21 am
 Fix + debug, write queue
 
 ### 2025-01-15 2:50 pm - Add header files and fix function calls
+Add header files and fix function calls
+
+### 2025-01-16 2:47 pm - Documentation
+Add documentation to player.c
 
 ## Edmund Liang
 
