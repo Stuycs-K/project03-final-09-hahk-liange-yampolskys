@@ -67,7 +67,7 @@ void load_library(struct song_node ** library, char *filename){
     }
   }
 
-  close (musicFile);
+  close(musicFile);
   printf("Library loaded from %s", filename);
 }
 

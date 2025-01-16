@@ -5,7 +5,7 @@
 #include "library.h"
 #include "file.h"
 
-//#define list_name "playlist.txt"
+#define list_name
 
 int main(){
   struct song_node **library = init();
@@ -106,12 +106,11 @@ int main(){
     }
 
     else if(option == 7){ //create new playlist
-      char list_name[100];
-      fgets(list_name, sizeof(list_name), stdin);
+    //  char list_name[100];
       printf("Enter playlist name: ");
-
+      fgets(list_name, sizeof(list_name), stdin);
       save_library(library, list_name);
-      printf("\n%s saved to playlists.\n", list_name);
+      printf("%s saved to playlists.\n", list_name);
       }
 
     else if(option == 8){ //delete playlist of choice
