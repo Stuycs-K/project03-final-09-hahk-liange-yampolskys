@@ -8,6 +8,7 @@
 #include "library.h"
 #include "music_player.h"
 
+//handle signals
 static void sighandler(int signo) {
     if (signo == SIGINT) {
         printf("\nTerminating playback...\n");
@@ -15,6 +16,8 @@ static void sighandler(int signo) {
     }
 }
 
+//return the filename of the next song
+//call play_file(skip(current))
 char* skip(struct song_node *current) {
     if (current && current->next) {
         return current->next->filename;
@@ -22,11 +25,14 @@ char* skip(struct song_node *current) {
     return NULL;
 }
 
+//helper
 struct song_node* shuffleNext(struct song_node **library) {
     int bucket = rand() % 27;
     return chooseRandom(library[bucket]);
 }
 
+//play songs in shuffled order
+//forks
 void shufflePlay(struct song_node **library) {
     struct song_node *current;
     pid_t playerPid;
@@ -58,6 +64,7 @@ void shufflePlay(struct song_node **library) {
     }
 }
 
+//play the same song on repeat
 void loop(struct song_node **library, struct song_node *song) {
     pid_t playerPid;
 
@@ -80,6 +87,7 @@ void loop(struct song_node **library, struct song_node *song) {
     }
 }
 
+//play a list with queued songs
 void queueSongs(struct song_node **library, struct song_node *queueHead) {
     struct song_node *current = queueHead;
     pid_t playerPid;
@@ -104,6 +112,7 @@ void queueSongs(struct song_node **library, struct song_node *queueHead) {
     }
 }
 
+//add songs to queue
 void addToQueue(struct song_node **queueHead, struct song_node *newSong) {
     struct song_node *current = *queueHead;
 
