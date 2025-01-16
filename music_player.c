@@ -77,6 +77,12 @@ struct frame_info * check_frame_info(char * b) {
   printf("<%s>\n", b);
   struct frame_info * ret;
   sscanf(b + 3, "%d %d %f %f\n", (int *)ret, (int *)ret + 1, (float *)ret + 2, (float *)ret + 3);
+
+  char str[1000];
+  char str2[1000];
+  int A, B;
+  sscanf(b + 3, "%d %d %s %s", &A, &B, str, str2); // will not always work without this for some reason
+
   return ret;
 }
 
