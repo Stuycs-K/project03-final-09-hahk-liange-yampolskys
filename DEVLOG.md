@@ -28,6 +28,8 @@ Plan queue
 ### 2025-01-15 2:21 am
 Fix + debug, write queue
 
+### 2025-01-15 2:50 pm - Add header files and fix function calls
+
 ## Edmund Liang
 
 ### 2025-01-07 - Add music_player files
