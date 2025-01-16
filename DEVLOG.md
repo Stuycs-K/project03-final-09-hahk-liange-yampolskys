@@ -84,3 +84,6 @@ Added new functions to work on like playing specific songs or making new playlis
 
 ### 2025-01-15, 2:48 P.M - Coded more user functions in main.c
 Debugged save_library and completed search artist function. Also played around with the formatting of the menu. Creating new playlist is in progress, working on creating new txt files for each playlist.
+
+### 2025-01-16, 2:45 P.M - Worked on playlist editing in main.c
+Encountered a practical issue on how to allow user to name and make multiple playlists, and to save to the playlist of their choice. Worked on creating new playlist and edited save playlist function.
