@@ -35,6 +35,9 @@ Add header files and fix function calls
 ### 2025-01-16 2:47 pm - Documentation
 Add documentation to player.c
 
+### 2025-01-17 2:50 - fixes + documentation
+Minor fixes and documentation on node.c
+
 ## Edmund Liang
 
 ### 2025-01-07 - Add music_player files
