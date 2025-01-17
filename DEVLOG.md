@@ -52,8 +52,29 @@ Switch to system instead of execvp to easily specify redirections, will probably
 ### 2025-01-10 - Add setup for communicating between program and mpg123 using pipes
 Use pipes to read from and write to the player for more fine-tuned control.
 
-### 2025-01-11, 2:36 PM - Split into multiple functions
+### 2025-01-13, 2:36 PM - Split into multiple functions
 Split the program into multiple functions so that they can be easily called from another file.
+
+### 2025-01-13, 2:50 PM - Add pause_playback and stop_playback
+Add the pause_playback and stop_playback functions that send the appropriate commands to the player.
+
+### 2025-01-14, 2:49 PM - Added more player functions, check_frame_info not working yet
+Added jump_absolute, jump_relative, set_volume functions, as well as check_frame_info which is not working yet. Also added the frame_info struct which the function uses.
+
+### 2025-01-15, 2:27 PM - Fix read_player and check_frame_info
+read_player now sets the character after the last character of what was read to NULL so that irrelevant stuff is not read when reading from the player. By removing the seconds and seconds_left parts of the frame_info, check_frame_info seems to work.
+
+### 2025-01-15, 2:50 PM - Add seconds info, but does not work
+Add back the seconds and seconds_left parts, but now it does not work (segfaults at times).
+
+### 2025-01-16, 2:50 PM - Fix check_frame_info?
+After some time debugging, check_frame_info seems to work unexpectedly - needs to be investigated.
+
+### 2025-01-17, 2:32 PM - Fix check_frame_info
+Turns out the problem was not mallocing to create the struct, so now it works.
+
+### 2025-01-17, 2:43 PM - Use execvp and redirection instead of system
+Using system takes longer to parse the arguments and is platform-dependent, so switch to using execvp and redirection.
 
 ## Keith Hah
 
