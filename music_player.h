@@ -20,7 +20,6 @@ struct frame_info {
 
 int to_player, from_player;
 char buff[1000];
-void check_mpg123();
 void connect_player();
 int player_setup();
 void disconnect_player();

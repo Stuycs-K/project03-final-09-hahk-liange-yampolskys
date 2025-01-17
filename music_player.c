@@ -1,9 +1,5 @@
 #include "music_player.h"
 
-void check_mpg123() {
-
-}
-
 void connect_player() {
   to_player = open("to_player", O_WRONLY, 0);
   from_player = open("from_player", O_RDONLY, 0);
@@ -17,8 +13,17 @@ int player_setup() {
     perror("fork fail");
     exit(1);
   } else if (p == 0) {
-    system("mpg123 -R < to_player > from_player"); // will probably switch to execvp and redirection
-    exit(0);
+    char * args[] = {"mpg123", "-R", NULL};
+
+	int inp = open("to_player", O_RDONLY);
+	if (inp == -1 || dup2(inp, fileno(stdin)) == -1) return 0;	
+	close(inp);
+
+    int tar = open("from_player", O_WRONLY, 0);
+	if (tar == -1 || dup2(tar, fileno(stdout)) == -1) return 0;
+	close(tar);
+
+    execvp(args[0], args);
     return 0;
   } else {
     connect_player();
@@ -76,13 +81,11 @@ int check_finished_playing(char * b) {
 struct frame_info * check_frame_info(char * b) {
   if (b[1] != 'F') return NULL;
   struct frame_info * ret = malloc(sizeof(struct frame_info));
-  int A, B;
-  float C, D;
   sscanf(b + 3, "%d %d %f %f", (int *)ret, (int *)ret + 1, (float *)ret + 2, (float *)ret + 3);
   return ret;
 }
 
-int main() {
+int main() { // sample code to play audio and read info about it
   int is_main = player_setup();
   if (is_main) {
     play_file("./beep-test.mp3");
