@@ -6,17 +6,34 @@ This document must be updated daily by EACH group member.
 ### 2025-01-07 - Create files
 Create the file player.c, plan out usage in the comments. Time spent writing: 2 minutes Time spent wrangling pulsar: 10 minutes
 
-### 2025-01-08 1:47 pm - start methods
+### 2025-01-08 2:47 pm - start methods
 Add node + library code from old project, begin modifying on branch Start skip + shuffle_next methods in player.c
 
-### 2025-01-09 1:47 pm - modify old code, shuffle
+### 2025-01-09 2:47 pm - modify old code, shuffle
 Modify node + library code, work on shuffle method read Edmund's code to understand how files are handled
 
 ### 2025-01-09 11:45 pm Finish shuffle, pause signals
 Finished the shuffle code Did research on signals, wrote pause with sighandler method (maybe, needs further testing)
 
-###1/10 2:50
-header files read code cleaned player.c (rewrite later)
+### 2025-01-10 2:50 pm
+write header files read group code clean player.c (rewrite later)
+
+### 2025-01-13 2:48 pm
+Rewrite library, node, main code to be compatible, need to test
+
+### 2025-01-14 2:49 pm shuffle skip loop queue
+Rewrite shuffle + skip to be compatible with music_player
+Write loop
+Plan queue
+
+### 2025-01-15 2:21 am
+Fix + debug, write queue
+
+### 2025-01-15 2:50 pm - Add header files and fix function calls
+Add header files and fix function calls
+
+### 2025-01-16 2:47 pm - Documentation
+Add documentation to player.c
 
 ## Edmund Liang
 
@@ -60,3 +77,18 @@ Fixed txt file format using strlen, error with loading the library correctly. In
 
 ### 2025-01-10, 2:48 P.M - Started add library function
 Temporarily ignoring load_library error, started on adding songs function.
+
+### 2025-01-13, 2:47 P.M - Located bug in load_library
+Found reason for the bug, which was due to the size of bytes occupied by the additional write statements. Also noticed different output when using sizeof vs strlen. Now it loads all the songs, but doesn't sort them properly.
+
+### 2025-01-14, 12:43 A.M - Recoded load_library
+Decided to make a menu for loading, adding, saving, etc. Changed main.c to print the menu out and use fgets for user input. Changed load_library to use buffer to handle file input. Also added add_library. Next steps will be to finish main.c and other library functions.
+
+### 2025-01-14, 2:48 P.M - Worked on user functions in main.c
+Added new functions to work on like playing specific songs or making new playlists. Finished the add song, save playlist, and view playlist. Almost done with looking up a song.
+
+### 2025-01-15, 2:48 P.M - Coded more user functions in main.c
+Debugged save_library and completed search artist function. Also played around with the formatting of the menu. Creating new playlist is in progress, working on creating new txt files for each playlist.
+
+### 2025-01-16, 2:45 P.M - Worked on playlist editing in main.c
+Encountered a practical issue on how to allow user to name and make multiple playlists, and to save to the playlist of their choice. Worked on creating new playlist and edited save playlist function.

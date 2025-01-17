@@ -1,9 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "node.h"
 #include "library.h"
 #include "file.h"
+#include "music_player.h"
+#include "player.h"
 
 int main(){
     struct song_node **library = init();
