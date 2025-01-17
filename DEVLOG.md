@@ -92,3 +92,6 @@ Debugged save_library and completed search artist function. Also played around w
 
 ### 2025-01-16, 2:45 P.M - Worked on playlist editing in main.c
 Encountered a practical issue on how to allow user to name and make multiple playlists, and to save to the playlist of their choice. Worked on creating new playlist and edited save playlist function.
+
+### 2025-01-17, 2:47 P.M - Added more functions in main.c
+Added functions like loop, skip, delete playlist. Finished delete song and working on delete playlist.
