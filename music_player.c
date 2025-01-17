@@ -18,6 +18,7 @@ int player_setup() {
     exit(1);
   } else if (p == 0) {
     system("mpg123 -R < to_player > from_player"); // will probably switch to execvp and redirection
+    exit(0);
     return 0;
   } else {
     connect_player();
@@ -74,15 +75,10 @@ int check_finished_playing(char * b) {
 
 struct frame_info * check_frame_info(char * b) {
   if (b[1] != 'F') return NULL;
-  printf("<%s>\n", b);
-  struct frame_info * ret;
-  sscanf(b + 3, "%d %d %f %f\n", (int *)ret, (int *)ret + 1, (float *)ret + 2, (float *)ret + 3);
-
-  char str[1000];
-  char str2[1000];
+  struct frame_info * ret = malloc(sizeof(struct frame_info));
   int A, B;
-  sscanf(b + 3, "%d %d %s %s", &A, &B, str, str2); // will not always work without this for some reason
-
+  float C, D;
+  sscanf(b + 3, "%d %d %f %f", (int *)ret, (int *)ret + 1, (float *)ret + 2, (float *)ret + 3);
   return ret;
 }
 
