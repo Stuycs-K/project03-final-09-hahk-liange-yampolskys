@@ -3,12 +3,14 @@
 #include <string.h>
 #include <time.h>
 #include "node.h"
-
+//same node as before with added field for filename for play_file
+//Kept the code for organization by artist + song, as sometimes filenames are not reflective 
 struct song_node *createnode(char *artist, char *title, char *filename, struct song_node *next) {
     struct song_node *x = malloc(sizeof(struct song_node));
     if (!x) return NULL;
     strcpy(x->artist, artist);
     strcpy(x->title, title);
+    strcpy(x->filename, filename);
     x->next = next;
     return x;
 }
@@ -46,7 +48,7 @@ struct song_node *free_list(struct song_node *list) {
     return start;
 }
 
-
+//Why we kept artist+title
 struct song_node * find_artist(struct song_node * list, char *artist){
     while(list != NULL){
         if(strcmp(list->artist, artist) == 0){
@@ -57,8 +59,8 @@ struct song_node * find_artist(struct song_node * list, char *artist){
     return NULL;
 }
 
+
 struct song_node * find_song(struct song_node * list, char *artist, char *title, char*filename){
-    //printf("reached end of pass\n");
     while(list != NULL){
             if(strcmp(list->artist, artist) == 0 && strcmp(list->title, title) == 0 &&  strcmp(list->filename, filename) == 0){
                 return list;
@@ -133,7 +135,8 @@ struct song_node * remove_node_by_index(struct song_node * list, int index){
 int compare(struct song_node *a, struct song_node *b) {
     int artist_cmp = strcasecmp(a->artist, b->artist);
     if (artist_cmp != 0) return artist_cmp;
-    return strcasecmp(a->title, b->title);
+    else if (strcasecmp(a->title, b->title) != 0)  return strcasecmp(a->title, b->title);
+    else return strcasecmp(a->filename, b->filename);
 }
 
 struct song_node *insert_alph(struct song_node *list, char *artist, char* filename,  char *title) {
