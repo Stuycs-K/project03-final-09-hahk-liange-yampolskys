@@ -1,5 +1,9 @@
 #include "music_player.h"
 
+int to_player;
+int from_player;
+char buff[1000];
+
 void connect_player() {
   to_player = open("to_player", O_WRONLY, 0);
   from_player = open("from_player", O_RDONLY, 0);
@@ -78,11 +82,8 @@ int check_finished_playing(char * b) {
   return b[1] == 'P' && b[3] == '0';
 }
 
-struct frame_info * check_frame_info(char * b) {
-  if (b[1] != 'F') return NULL;
-  struct frame_info * ret = malloc(sizeof(struct frame_info));
-  sscanf(b + 3, "%d %d %f %f", (int *)ret, (int *)ret + 1, (float *)ret + 2, (float *)ret + 3);
-  return ret;
+int get_to_player(){
+  return to_player;
 }
 
 int interactive_player(char * file_name, char * artist, char * title, float volume) {
@@ -158,6 +159,15 @@ int interactive_player(char * file_name, char * artist, char * title, float volu
   return ret;
 }
 
+int get_from_player(){
+  return from_player;
+}
+
+char * get_buff(){
+  return buff;
+}
+
+/*
 int main() {
   int is_main = player_setup();
   if (is_main) {
@@ -166,3 +176,4 @@ int main() {
   }
   return 0;
 }
+*/

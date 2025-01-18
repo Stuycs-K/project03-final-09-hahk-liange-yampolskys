@@ -20,17 +20,13 @@ void print(struct song_node * m){
 
 
 void print_list(struct song_node *list) {
- //need to fix formatting
     printf("[");
-    while (list->next != NULL) {
-        printf(" {");
-        print(list);
-        printf("} |");
+    while (list) {
+        printf("{%s, %s, %s}", list->artist, list->title, list->filename);
         list = list->next;
+        if (list) printf(", ");
     }
-    printf(" {");
-    print(list);
-    printf("} ]");
+    printf("]\n");
 }
 
 struct song_node *insert_front(struct song_node *list, char *artist, char*filename, char *title) {
@@ -65,12 +61,11 @@ struct song_node * find_song(struct song_node * list, char *artist, char *title,
             if(strcmp(list->artist, artist) == 0 && strcmp(list->title, title) == 0 &&  strcmp(list->filename, filename) == 0){
                 return list;
             }
+            list = list->next;
         printf("reached end of pass\n");
         list = list->next;
     }
-
-
-
+    
     return NULL;
 }
 
@@ -96,10 +91,10 @@ struct song_node * chooseRandom(struct song_node * list){
 
 }
 // HELPER/DEBUGGING METHOD
-int songIndex(struct song_node *list, char *artist, char *title){
+int songIndex(struct song_node *list, char *artist, char *title, char* filename){
     int count = 0;
     while(list != NULL){
-            if(strcmp(list->artist, artist) == 0 && strcmp(list->title, title) == 0){
+            if(strcmp(list->artist, artist) == 0 && strcmp(list->title, title) == 0 && strcmp(list->filename, filename) == 0){
                 return count;
             }
         count += 1;

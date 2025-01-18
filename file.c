@@ -22,58 +22,78 @@ void save_library(struct song_node ** library, char *filename){
     struct song_node *curr = library[i];
     while(curr){
       write(musicFile, curr->artist, strlen(curr->artist));
-      write(musicFile,"-" , 1);
+      write(musicFile,"|" , 1);
       write(musicFile, curr->title, strlen(curr->title));
-      write(musicFile,"\n" , 2);
+      write(musicFile,"|", 1);
+      write(musicFile, curr->filename, strlen(curr->filename));
+      write(musicFile,"\n" , 1);
       curr = curr->next;
     }
   }
 
   close(musicFile);
+  //printf("Library saved to %s\n", filename);
 }
 
 void load_library(struct song_node ** library, char *filename){
-  char artist[100], title[100];
-  struct song_node temp;
-  int bytes, index;
+  char line[256], buffer[1];
+  int index = 0;
+  int bytes = 0;
+  int list;
   int musicFile = open(filename, O_RDONLY);
   if(musicFile == -1){
-    perror("open file fail (load)");
-    exit(1);
+    perror("No library detected. New library created\n");
+    return;;
   }
 
-  while((bytes = read(musicFile, artist, sizeof(artist)-1)) > 0){
-    artist[bytes] = '\0';
+  while((bytes = read(musicFile, buffer, 1)) > 0){
+    if(buffer[0] == '\n' || index >= sizeof(line) - 1){
+      line[index] = '\0';
 
-    bytes = read(musicFile, title, sizeof(title)-1);
-    if(bytes <= 0){
-      break;
-    }
-    title[bytes] = '\0';
-
-    if(artist[0] >= 'A' && artist[0] <= 'Z'){
-      index = artist[0] - 'A';
+      char *line_pointer = line;
+      char *artist = strsep(&line_pointer, "|");
+      char *title = strsep(&line_pointer, "|");
+      char *filename = strsep(&line_pointer, "|");
+      if(artist && title && filename){
+        while(*artist == ' '){
+          artist++;
+        }
+        while(*title == ' '){
+          title++;
+        }
+        while(*filename == ' '){
+          filename++;
+        }
+        if(artist[0] >= 'A' && artist[0] <= 'Z'){
+          list = artist[0] - 'A';
+        }
+        else{
+          list = 26;
+        }
+        library[list] = insert_alph(library[list], artist, title, filename);
+      }
+      index = 0;
     }
     else{
-      index = 26;
+      line[index++] = buffer[0];
     }
-
-    library[index] = insert_alph(library[index], artist, title);
   }
 
-  close (musicFile);
+  close(musicFile);
+  printf("Library loaded from %s", filename);
 }
 
-void add_library(struct song_node **library, char *filename){
-    int musicFile = open(filename, O_RDONLY, 0644);
-    int bytes;
-    int char artist[100], title[100];
-    if(musicFile == -1){
-      perror("open musicfile fail");
-      exit(1);
+void add_library(struct song_node **library, char *artist, char *title){
+    int list;
+    if(artist[0] >= 'A' && artist[0] <= 'Z'){
+      list = artist[0] - 'A';
+    }
+    else{
+      list = 26;
     }
 
-
+    library[list] = insert_alph(library[list], artist, title, NULL);
+    printf("Song added: %s , %s\n", artist, title);
 }
 
 //Saving files, adding files, reading files.
