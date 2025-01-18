@@ -40,7 +40,17 @@ int main(){
       print_library(library);
     }
 
-    else if(option == 2){ //play
+    else if(option == 2) //play
+      if(library != NULL && numFilled(library) > 0){
+        struct song_node *first_song = library[0];
+        if(first_song != NULL){
+          printf("Playing: %s by %s\n", first_song->title, first_song->artist);
+          playfile(first_song->title);
+        }
+      }
+      else{
+        printf("\nNo songs left to play\n");
+      }
 
     }
 
