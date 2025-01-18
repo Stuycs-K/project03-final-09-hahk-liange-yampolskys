@@ -190,16 +190,26 @@ int main(){
     }
 
     else if(option == 10){ //loop playlist
-
-    }
+      if(curr_song){
+        loop(library, curr_song);
+      }
+      else{
+        printf("\nNo song to loop\n");
+      }
+    } 
 
     else if(option == 11){ //create new playlist
     //  char list_name[100];
-      printf("Enter playlist name: ");
-      fgets(list_name, sizeof(list_name), stdin);
+      printf("Enter new playlist name: ");
+      if(fgets(list_name, sizeof(list_name), stdin)){
+        int length = strlen(list_name);
+        if(length > 0 && list_name[length - 1] == '\n'){
+          list_name[length -1] = '\0';
+        }
+      }
       save_library(library, list_name);
       printf("\n%s saved to playlists.\n", list_name);
-      }
+    }
 
     else if(option == 12){ //delete playlist of choice
       char name[100];
