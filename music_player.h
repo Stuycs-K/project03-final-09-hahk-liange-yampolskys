@@ -10,6 +10,7 @@
 #include <time.h>
 #include <fcntl.h>
 #include <string.h>
+#include <termios.h>
 
 struct frame_info {
   int frames;
@@ -33,5 +34,6 @@ void jump_relative(float seconds);
 void set_volume(float percent);
 int check_finished_playing(char * b);
 struct frame_info * check_frame_info(char * b);
+void interactive_player(char * file_name, char * artist, char * title);
 
 #endif

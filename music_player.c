@@ -6,22 +6,22 @@ void connect_player() {
 }
 
 int player_setup() {
-  pid_t p = fork();
   mkfifo("to_player", 0777);
   mkfifo("from_player", 0777);
+  pid_t p = fork();
   if (p < 0) {
     perror("fork fail");
     exit(1);
   } else if (p == 0) {
     char * args[] = {"mpg123", "-R", NULL};
 
-	int inp = open("to_player", O_RDONLY);
-	if (inp == -1 || dup2(inp, fileno(stdin)) == -1) return 0;	
-	close(inp);
+    int inp = open("to_player", O_RDONLY);
+    if (inp == -1 || dup2(inp, STDIN_FILENO) == -1) return 0;
+    close(inp);
 
     int tar = open("from_player", O_WRONLY, 0);
-	if (tar == -1 || dup2(tar, fileno(stdout)) == -1) return 0;
-	close(tar);
+    if (tar == -1 || dup2(tar, STDOUT_FILENO) == -1) return 0;
+    close(tar);
 
     execvp(args[0], args);
     return 0;
@@ -85,10 +85,48 @@ struct frame_info * check_frame_info(char * b) {
   return ret;
 }
 
+
+void interactive_player(char * file_name, char * artist, char * title) {
+  printf("Now playing: %s - %s\n", artist, title);
+  play_file(file_name);
+
+  fd_set read_fds;
+  FD_ZERO(&read_fds);
+  FD_SET(from_player, &read_fds);
+  FD_SET(STDIN_FILENO, &read_fds);
+
+  // modify terminal options so that does not wait for enter key and does not output - only works on unix
+  struct termios oldt, newt;
+  tcgetattr(STDIN_FILENO, &oldt);
+  newt = oldt;
+  newt.c_lflag &= ~(ICANON | ECHO);
+  tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+
+  do {
+    FD_ZERO(&read_fds);
+    FD_SET(from_player, &read_fds);
+    FD_SET(STDIN_FILENO, &read_fds);
+    int idx = select(from_player+1, &read_fds, NULL, NULL, NULL);
+    if (FD_ISSET(STDIN_FILENO, &read_fds)) {
+      char c = getchar();
+      if (c == ' ') pause_playback();
+    }
+    if (FD_ISSET(from_player, &read_fds)) {
+      read_player(buff);
+      struct frame_info * i = check_frame_info(buff);
+      if (i != NULL) {
+        printf("\x1b[1F\x1b[2KNow playing %s - %s, %fs\n", artist, title, i->seconds);
+      }
+    }
+  } while (!check_finished_playing(buff));
+
+  tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+}
+
 int main() { // sample code to play audio and read info about it
   int is_main = player_setup();
   if (is_main) {
-    play_file("./beep-test.mp3");
+    /*play_file("./beep-test.mp3");
     while (1) {
         read_player(buff);
         if (check_finished_playing(buff)) break;
@@ -97,7 +135,8 @@ int main() { // sample code to play audio and read info about it
             struct frame_info r = *i;
             printf("%d frames, %d frames left, %f seconds, %f seconds left\n", r.frames, r.frames_left, r.seconds, r.seconds_left);
         }
-    }
+    }*/
+    interactive_player("./beep-test.mp3", "Artist", "Title");
     disconnect_player();
   }
   return 0;
