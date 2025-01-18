@@ -12,7 +12,7 @@ Create a music player program. It will build on project 1 by incorporating a mus
 Running the program will prompt the user to type in the commands for what they want to do, whether it's add songs, play songs, view their library, or view the song details.
 
 # Technical Details:
-The project will allocate memory and work with files (the music library), find information about files(song details), use processes (playing the music with fork and execvp), use signals (to handle user Ctrl+C), and use pipes (communication between main program and music player).
+The project will allocate memory and work with files (the music library), write and read files (playlist data), use processes (playing the music with fork and execvp), use signals (to handle user Ctrl+C), and use pipes (communication between main program and music player).
 
 Edmund: Execvp for the music player using mpg123
 Stella: Music player interface, skipping, pausing, sorting, etc.
