@@ -20,22 +20,21 @@ int main(){
   char input[100];
   struct song_node *curr_song = NULL;
 
-  while(option != 13){
+  while(option != 12){
     printf("\n__________________________\n");
     printf("\nMenu:\n");
     printf("1. Load & view playlist\n");
-    printf("2. Play\n");
-    printf("3. Play a song\n");
-    printf("4. Skip song\n"); 
+    printf("2. Look up a song\n");
+    printf("3. Look up an artist\n");
+    printf("4. Play a song\n");
     printf("5. Add song\n");
     printf("6. Remove song\n");
-    printf("7. Look up a song\n");
-    printf("8. Look up an artist\n");
-    printf("9. Shuffle playlist\n"); 
-    printf("10. Loop playlist\n"); 
-    printf("11. Create new playlist\n");
-    printf("12. Delete playlist\n");
-    printf("13. Save and exit\n");
+    printf("7. Play\n");
+    printf("8. Shuffle playlist\n"); 
+    printf("9. Loop playlist\n"); 
+    printf("10. Create new playlist\n");
+    printf("11. Delete playlist\n");
+    printf("12. Save and exit\n");
     printf("Choose an option: ");
 
     if(fgets(input, sizeof(input), stdin)){
@@ -71,18 +70,54 @@ int main(){
       }
     }
 
-    else if(option == 2){ //play
-      curr_song = library[0];
-      if(curr_song){
-        printf("Playing: %s by %s\n", curr_song->title, curr_song->artist);
-        play_file(curr_song->filename);
+    else if(option == 2){ //look up song
+      char artist[100];
+      char title[100];
+      char filename[100];
+      printf("Enter artist: ");
+      if(fgets(artist, sizeof(artist), stdin)){
+        int length = strlen(artist);
+        if(length > 0 && artist[length-1] == '\n'){
+          artist[length - 1] = '\0';
+        }
+      }
+      printf("Enter title: ");
+      if(fgets(title, sizeof(title), stdin)){
+          int length = strlen(title);
+          if(length > 0 && title[length-1] == '\n'){
+              title[length-1] = '\0';
+          }
+      }
+      printf("Enter filename: ");
+      if(fgets(filename, sizeof(filename), stdin)){
+          int length = strlen(filename);
+          if(length > 0 && filename[length-1] == '\n'){
+              filename[length-1] = '\0';
+          }
+      }
+      struct song_node *song = search_song(library, artist, title, filename);
+      if(song){
+        printf("\nFound %s by %s.\n", song->title, song->artist);
       }
       else{
-        printf("\nNo songs left to play\n");
+        printf("\nSong not found.\n");
       }
-    } 
+    }
 
-    else if(option == 3){ //play specific song
+    else if(option == 3){ //look up artist
+      char artist[100];
+      printf("Enter artist: ");
+      if(fgets(artist, sizeof(artist), stdin)){
+        int length = strlen(artist);
+        if(length > 0 && artist[length - 1] == '\n'){
+          artist[length -1] = '\0';
+        }
+      }
+      printf("\nSongs by %s:\n", artist);
+      print_artist(library, artist);
+    }
+
+   else if(option == 4){ //play specific song
       char artist[100];
       char title[100];
       char filename[100];
@@ -115,17 +150,6 @@ int main(){
       else{
         printf("\nSong not found.\n");
       }    
-    }
-
-    else if(option == 4){ //skip song
-      if(curr_song && curr_song->next){
-        curr_song= curr_song->next;
-        printf("\n Now playing: %s by %s", curr_song->title, curr_song->artist);
-        play_file(curr_song-> filename);
-      }
-      else{
-        printf("\nNo more songs to skip.\n");
-      }
     }
 
     else if(option == 5){ //add song
@@ -187,58 +211,22 @@ int main(){
       printf("\nSong removed.\n");
     }
 
-    else if(option == 7){ //look up song
-      char artist[100];
-      char title[100];
-      char filename[100];
-      printf("Enter artist: ");
-      if(fgets(artist, sizeof(artist), stdin)){
-        int length = strlen(artist);
-        if(length > 0 && artist[length-1] == '\n'){
-          artist[length - 1] = '\0';
-        }
-      }
-      printf("Enter title: ");
-      if(fgets(title, sizeof(title), stdin)){
-          int length = strlen(title);
-          if(length > 0 && title[length-1] == '\n'){
-              title[length-1] = '\0';
-          }
-      }
-      printf("Enter filename: ");
-      if(fgets(filename, sizeof(filename), stdin)){
-          int length = strlen(filename);
-          if(length > 0 && filename[length-1] == '\n'){
-              filename[length-1] = '\0';
-          }
-      }
-      struct song_node *song = search_song(library, artist, title, filename);
-      if(song){
-        printf("\nFound %s by %s.\n", song->title, song->artist);
+    else if(option == 7){ //play
+      curr_song = library[0];
+      if(curr_song){
+        printf("Playing: %s by %s\n", curr_song->title, curr_song->artist);
+        play_file(curr_song->filename);
       }
       else{
-        printf("\nSong not found.\n");
+        printf("\nNo songs left to play\n");
       }
-    }
+    } 
 
-    else if(option == 8){ //look up artist
-      char artist[100];
-      printf("Enter artist: ");
-      if(fgets(artist, sizeof(artist), stdin)){
-        int length = strlen(artist);
-        if(length > 0 && artist[length - 1] == '\n'){
-          artist[length -1] = '\0';
-        }
-      }
-      printf("\nSongs by %s:\n", artist);
-      print_artist(library, artist);
-    }
-
-    else if(option == 9){//shuffle playlist
+    else if(option == 8){//shuffle playlist
       shufflePlay(library); 
     }
 
-    else if(option == 10){ //loop playlist
+    else if(option == 9){ //loop playlist
       if(curr_song){
         loop(library, curr_song);
       }
@@ -247,7 +235,7 @@ int main(){
       }
     } 
 
-    else if(option == 11){ //create new playlist
+    else if(option == 10){ //create new playlist
       char new_list[100];
       printf("Enter new playlist name: ");
       if(fgets(new_list, sizeof(new_list), stdin)){
@@ -267,7 +255,7 @@ int main(){
       }    
     }
 
-    else if(option == 12){ //delete playlist of choice
+    else if(option == 11){ //delete playlist of choice
       printf("Enter playlist name to delete: ");
       if(fgets(list_name, sizeof(list_name), stdin)){
         int length = strlen(list_name);
@@ -279,7 +267,7 @@ int main(){
       printf("\n%s deleted.\n", list_name);
     }
 
-    else if(option == 13){ //save and exit
+    else if(option == 12){ //save and exit
       save_library(library, list_name);
       printf("\nPlaylist saved.\n");
       reset(library);
