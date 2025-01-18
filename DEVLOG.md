@@ -111,8 +111,6 @@ Decided to make a menu for loading, adding, saving, etc. Changed main.c to print
 ### 2025-01-14, 2:48 P.M - Worked on user functions in main.c
 Added new functions to work on like playing specific songs or making new playlists. Finished the add song, save playlist, and view playlist. Almost done with looking up a song.
 
-<<<<<<< HEAD
-=======
 ### 2025-01-15, 2:48 P.M - Coded more user functions in main.c
 Debugged save_library and completed search artist function. Also played around with the formatting of the menu. Creating new playlist is in progress, working on creating new txt files for each playlist.
 
@@ -127,4 +125,3 @@ Completed loop, shuffle, create playlist, delete playlist, play song, and skip s
 
 ### 2025-01-18, 12:56 A.M - Finished main.c
 Tested the functions for additional bugs and made improvements to load and view playlist and player.c. Will continue reviewing tomorrow.
->>>>>>> c3cf160d7ce0f4bbbf835e60136bf8551b892373

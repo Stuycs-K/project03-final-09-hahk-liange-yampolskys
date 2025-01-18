@@ -18,15 +18,10 @@ struct frame_info {
   float seconds_left;
 };
 
-<<<<<<< HEAD
 extern int to_player;
 extern int from_player; //searched up; extern basically defines variables in single c file
 extern char buff[1000];
 void check_mpg123();
-=======
-int to_player, from_player;
-char buff[1000];
->>>>>>> c3cf160d7ce0f4bbbf835e60136bf8551b892373
 void connect_player();
 int player_setup();
 void disconnect_player();
@@ -39,12 +34,8 @@ void jump_absolute(float seconds);
 void jump_relative(float seconds);
 void set_volume(float percent);
 int check_finished_playing(char * b);
-<<<<<<< HEAD
 int get_to_player();
 int get_from_player();
 char* get_buff();
-=======
-struct frame_info * check_frame_info(char * b);
->>>>>>> c3cf160d7ce0f4bbbf835e60136bf8551b892373
 
 #endif

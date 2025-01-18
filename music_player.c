@@ -1,6 +1,5 @@
 #include "music_player.h"
 
-<<<<<<< HEAD
 int to_player;
 int from_player;
 char buff[1000];
@@ -9,8 +8,6 @@ void check_mpg123() {
 
 }
 
-=======
->>>>>>> c3cf160d7ce0f4bbbf835e60136bf8551b892373
 void connect_player() {
   to_player = open("to_player", O_WRONLY, 0);
   from_player = open("from_player", O_RDONLY, 0);
@@ -89,7 +86,6 @@ int check_finished_playing(char * b) {
   return b[1] == 'P' && b[3] == '0';
 }
 
-<<<<<<< HEAD
 int get_to_player(){
   return to_player;
 }
@@ -104,16 +100,6 @@ char* get_buff(){
 
 /*
 int main() {
-=======
-struct frame_info * check_frame_info(char * b) {
-  if (b[1] != 'F') return NULL;
-  struct frame_info * ret = malloc(sizeof(struct frame_info));
-  sscanf(b + 3, "%d %d %f %f", (int *)ret, (int *)ret + 1, (float *)ret + 2, (float *)ret + 3);
-  return ret;
-}
-
-int main() { // sample code to play audio and read info about it
->>>>>>> c3cf160d7ce0f4bbbf835e60136bf8551b892373
   int is_main = player_setup();
   if (is_main) {
     play_file("./beep-test.mp3");
