@@ -1,5 +1,6 @@
 #include "music_player.h"
 
+<<<<<<< HEAD
 int to_player;
 int from_player;
 char buff[1000];
@@ -8,6 +9,8 @@ void check_mpg123() {
 
 }
 
+=======
+>>>>>>> c3cf160d7ce0f4bbbf835e60136bf8551b892373
 void connect_player() {
   to_player = open("to_player", O_WRONLY, 0);
   from_player = open("from_player", O_RDONLY, 0);
@@ -21,7 +24,17 @@ int player_setup() {
     perror("fork fail");
     exit(1);
   } else if (p == 0) {
-    system("mpg123 -R < to_player > from_player"); // will probably switch to execvp and redirection
+    char * args[] = {"mpg123", "-R", NULL};
+
+	int inp = open("to_player", O_RDONLY);
+	if (inp == -1 || dup2(inp, fileno(stdin)) == -1) return 0;	
+	close(inp);
+
+    int tar = open("from_player", O_WRONLY, 0);
+	if (tar == -1 || dup2(tar, fileno(stdout)) == -1) return 0;
+	close(tar);
+
+    execvp(args[0], args);
     return 0;
   } else {
     connect_player();
@@ -37,7 +50,7 @@ void disconnect_player() {
 }
 
 void read_player(char * b) {
-    read(from_player, b, sizeof(b));
+  b[read(from_player, b, 1000)] = '\0';
 }
 
 void write_player(char * b) {
@@ -49,10 +62,34 @@ void play_file(char * file_name) {
   write_player(buff);
 }
 
+void pause_playback() {
+  write_player("P\n");
+}
+
+void stop_playback() {
+  write_player("S\n");
+}
+
+void jump_absolute(float seconds) {
+  sprintf(buff, "J %fs\n", seconds);
+  write_player(buff);
+}
+
+void jump_relative(float seconds) {
+  sprintf(buff, seconds > 0 ? "J +%fs\n" : "J -%fs\n", seconds);
+  write_player(buff);
+}
+
+void set_volume(float percent) {
+  sprintf(buff, "V %f\n", percent);
+  write_player(buff);
+}
+
 int check_finished_playing(char * b) {
   return b[1] == 'P' && b[3] == '0';
 }
 
+<<<<<<< HEAD
 int get_to_player(){
   return to_player;
 }
@@ -67,12 +104,27 @@ char* get_buff(){
 
 /*
 int main() {
+=======
+struct frame_info * check_frame_info(char * b) {
+  if (b[1] != 'F') return NULL;
+  struct frame_info * ret = malloc(sizeof(struct frame_info));
+  sscanf(b + 3, "%d %d %f %f", (int *)ret, (int *)ret + 1, (float *)ret + 2, (float *)ret + 3);
+  return ret;
+}
+
+int main() { // sample code to play audio and read info about it
+>>>>>>> c3cf160d7ce0f4bbbf835e60136bf8551b892373
   int is_main = player_setup();
   if (is_main) {
     play_file("./beep-test.mp3");
     while (1) {
         read_player(buff);
         if (check_finished_playing(buff)) break;
+        struct frame_info * i = check_frame_info(buff);
+        if (i != NULL) {
+            struct frame_info r = *i;
+            printf("%d frames, %d frames left, %f seconds, %f seconds left\n", r.frames, r.frames_left, r.seconds, r.seconds_left);
+        }
     }
     disconnect_player();
   }

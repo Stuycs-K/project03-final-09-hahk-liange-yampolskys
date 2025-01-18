@@ -25,8 +25,19 @@ Rewrite library, node, main code to be compatible, need to test
 Rewrite shuffle + skip to be compatible with music_player
 Write loop
 Plan queue
+
 ### 2025-01-15 2:21 am
 Fix + debug, write queue
+
+### 2025-01-15 2:50 pm - Add header files and fix function calls
+Add header files and fix function calls
+
+### 2025-01-16 2:47 pm - Documentation
+Add documentation to player.c
+
+### 2025-01-17 2:50 - fixes + documentation
+Minor fixes and documentation on node.c
+
 ## Edmund Liang
 
 ### 2025-01-07 - Add music_player files
@@ -41,8 +52,29 @@ Switch to system instead of execvp to easily specify redirections, will probably
 ### 2025-01-10 - Add setup for communicating between program and mpg123 using pipes
 Use pipes to read from and write to the player for more fine-tuned control.
 
-### 2025-01-11, 2:36 PM - Split into multiple functions
+### 2025-01-13, 2:36 PM - Split into multiple functions
 Split the program into multiple functions so that they can be easily called from another file.
+
+### 2025-01-13, 2:50 PM - Add pause_playback and stop_playback
+Add the pause_playback and stop_playback functions that send the appropriate commands to the player.
+
+### 2025-01-14, 2:49 PM - Added more player functions, check_frame_info not working yet
+Added jump_absolute, jump_relative, set_volume functions, as well as check_frame_info which is not working yet. Also added the frame_info struct which the function uses.
+
+### 2025-01-15, 2:27 PM - Fix read_player and check_frame_info
+read_player now sets the character after the last character of what was read to NULL so that irrelevant stuff is not read when reading from the player. By removing the seconds and seconds_left parts of the frame_info, check_frame_info seems to work.
+
+### 2025-01-15, 2:50 PM - Add seconds info, but does not work
+Add back the seconds and seconds_left parts, but now it does not work (segfaults at times).
+
+### 2025-01-16, 2:50 PM - Fix check_frame_info?
+After some time debugging, check_frame_info seems to work unexpectedly - needs to be investigated.
+
+### 2025-01-17, 2:32 PM - Fix check_frame_info
+Turns out the problem was not mallocing to create the struct, so now it works.
+
+### 2025-01-17, 2:43 PM - Use execvp and redirection instead of system
+Using system takes longer to parse the arguments and is platform-dependent, so switch to using execvp and redirection.
 
 ## Keith Hah
 
@@ -79,3 +111,20 @@ Decided to make a menu for loading, adding, saving, etc. Changed main.c to print
 ### 2025-01-14, 2:48 P.M - Worked on user functions in main.c
 Added new functions to work on like playing specific songs or making new playlists. Finished the add song, save playlist, and view playlist. Almost done with looking up a song.
 
+<<<<<<< HEAD
+=======
+### 2025-01-15, 2:48 P.M - Coded more user functions in main.c
+Debugged save_library and completed search artist function. Also played around with the formatting of the menu. Creating new playlist is in progress, working on creating new txt files for each playlist.
+
+### 2025-01-16, 2:45 P.M - Worked on playlist editing in main.c
+Encountered a practical issue on how to allow user to name and make multiple playlists, and to save to the playlist of their choice. Worked on creating new playlist and edited save playlist function.
+
+### 2025-01-17, 2:47 P.M - Added more functions in main.c
+Added functions like loop, skip, delete playlist. Finished delete song and working on delete playlist.
+
+### 2025-01-17, 10:47 P.M - Worked on more functions in main.c and debugged other c files
+Completed loop, shuffle, create playlist, delete playlist, play song, and skip song. Also fixed sighandle error (control c leads to unkilled child processes) and multiple definition error (searched up extern). 
+
+### 2025-01-18, 12:56 A.M - Finished main.c
+Tested the functions for additional bugs and made improvements to load and view playlist and player.c. Will continue reviewing tomorrow.
+>>>>>>> c3cf160d7ce0f4bbbf835e60136bf8551b892373

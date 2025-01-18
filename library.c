@@ -13,24 +13,24 @@ struct song_node **init() {
     return library;
 }
 
-void add(struct song_node **library, char *artist, char *title) {
+void add(struct song_node **library, char *artist, char *title, char*filename) {
     int index;
     if (artist[0] >= 'A' && artist[0] <= 'Z') {
         index = artist[0] - 'A';
     } else {
         index = 26; // For non-letter artists
     }
-    library[index] = insert_alph(library[index], artist, title);
+    library[index] = insert_alph(library[index], artist, title, filename);
 }
 
-struct song_node *search_song(struct song_node **library, char *artist, char *title) {
+struct song_node *search_song(struct song_node **library, char *artist, char *title, char *filename) {
     int index;
     if (artist[0] >= 'A' && artist[0] <= 'Z') {
         index = artist[0] - 'A';
     } else {
         index = 26; // For non-letter artists
     }
-    return find_song(library[index], artist, title);
+    return find_song(library[index], artist, title,filename);
 }
 
 struct song_node *search_artist(struct song_node **library, char *artist) {
@@ -135,8 +135,8 @@ void shuffle (struct song_node ** library, int n){
     }
     free(validind);
 }
-int delete_song(struct song_node ** library, char* artist, char* title ){
-    if (search_song(library, artist, title) == NULL){
+int delete_song(struct song_node ** library, char* artist, char* title, char*filename ){
+    if (search_song(library, artist, title,filename) == NULL){
         return 1;
     }
     int index;
@@ -145,7 +145,7 @@ int delete_song(struct song_node ** library, char* artist, char* title ){
     } else {
         index = 26; // For non-letter artists
     }
-    library[index] = remove_by_song(library[index], artist, title);
+    library[index] = remove_by_song(library[index], artist, title, filename);
     return 0;
 }
 

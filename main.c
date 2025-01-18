@@ -1,14 +1,20 @@
+<<<<<<< HEAD
 #include <stdio.h>
 #include <sys/stat.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
 #include "node.h"
+=======
+>>>>>>> c3cf160d7ce0f4bbbf835e60136bf8551b892373
 #include "library.h"
 #include "file.h"
 #include "music_player.h"
 #include "player.h"
+<<<<<<< HEAD
 #define default_list "playlist.txt"
+=======
+>>>>>>> c3cf160d7ce0f4bbbf835e60136bf8551b892373
 
 int main(){
   signal(SIGINT, sighandler);
