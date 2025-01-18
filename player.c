@@ -18,15 +18,6 @@ void sighandler(int signo) {
     }
 }
 
-//return the filename of the next song
-//call play_file(skip(current))
-char* skip(struct song_node *current) {
-    if (current && current->next) {
-        return current->next->filename;
-    }
-    return NULL;
-}
-
 //helper
 struct song_node* shuffleNext(struct song_node **library) {
     int bucket = rand() % 27;
@@ -42,12 +33,7 @@ void shufflePlay(struct song_node **library) {
     while (1) {
         current = shuffleNext(library);
         if (current) {
-            printf("Now playing: %s - %s\n", current->artist, current->title);
-            play_file(current->filename);
-
-            do {
-                read_player(buff);
-            } while (!check_finished_playing(buff));
+           interactive_player(current->filename, current->artist, current->title);
         } else {
             printf("No songs available.\n");
             break;
@@ -60,11 +46,7 @@ void loop(struct song_node **library, struct song_node *song) {
     signal(SIGINT, sighandler);
 
     while (1) {
-        play_file(song->filename);
-
-        do {
-            read_player(buff);
-        } while (!check_finished_playing(buff));
+        interactive_player(song->filename, song->artist, song->title);
     }
 }
 
@@ -74,12 +56,7 @@ void queueSongs(struct song_node **library, struct song_node *queueHead) {
     signal(SIGINT, sighandler);
 
     while (current) {
-        play_file(current->filename);
-
-        do {
-            read_player(buff);
-        } while (!check_finished_playing(buff));
-
+        interactive_player(current->filename, current->artist, current->title);
         current = current->next;
     }
 }
