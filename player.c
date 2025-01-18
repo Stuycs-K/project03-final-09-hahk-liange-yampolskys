@@ -13,31 +13,60 @@ void sighandler(int signo) {
     if (signo == SIGINT) {
         printf("\nTerminating playback...\n");
         disconnect_player();
-        kill(0, SIGKILL); // b/c when ctrl+c, child processes arent killed 
+        kill(0, SIGKILL);
         exit(0);
     }
 }
 
-//helper
-struct song_node* shuffleNext(struct song_node **library) {
-    int bucket = rand() % 27;
-    return chooseRandom(library[bucket]);
+//return the filename of the next song
+//call play_file(skip(current))
+char* skip(struct song_node *current) {
+    if (current && current->next) {
+        return current->next->filename;
+    }
+    return NULL;
+}
+
+// Fisher-Yates shuffle helper function
+void fisherYatesShuffle(struct song_node **array, int size) {
+    for (int i = size - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        struct song_node *temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
 }
 
 //play songs in shuffled order
 //forks
 void shufflePlay(struct song_node **library) {
-    struct song_node *current;
+    struct song_node *songArray[1000];
+    int count = 0;
+
+    for (int i = 0; i < 27; i++) {
+        struct song_node *current = library[i];
+        while (current) {
+            songArray[count++] = current;
+            current = current->next;
+        }
+    }
+
+    if (count == 0) {
+        printf("No songs available.\n");
+        return;
+    }
+
+    fisherYatesShuffle(songArray, count);
+
     signal(SIGINT, sighandler);
 
-    while (1) {
-        current = shuffleNext(library);
-        if (current) {
-           interactive_player(current->filename, current->artist, current->title);
-        } else {
-            printf("No songs available.\n");
-            break;
-        }
+    for (int i = 0; i < count; i++) {
+        printf("Now playing: %s - %s\n", songArray[i]->artist, songArray[i]->title);
+        play_file(songArray[i]->filename);
+
+        do {
+            read_player(buff);
+        } while (!check_finished_playing(buff));
     }
 }
 
