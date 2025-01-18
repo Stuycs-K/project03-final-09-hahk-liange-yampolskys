@@ -55,11 +55,20 @@ int main(){
     }
 
     else if(option == 3){ //play specific song
+      c
 
       }
 
     else if(option == 4){ //skip song
-
+      struct song_node *curr_song = NULL;
+      struct song_node *next_song = curr_song->next;
+      if(next_song != NULL){
+        printf("\n Now playing: %s by %s", next_song->title, next_song->artist);
+        play_file(next_song->title);
+      }
+      else{
+        printf("\nNo more songs to skip.\n");
+      }
     }
 
 
