@@ -65,7 +65,7 @@ void jump_absolute(float seconds) {
 }
 
 void jump_relative(float seconds) {
-  sprintf(buff, seconds > 0 ? "J +%fs\n" : "J -%fs\n", seconds);
+  sprintf(buff, seconds > 0 ? "J +%fs\n" : "J %fs\n", seconds);
   write_player(buff);
 }
 
@@ -85,7 +85,7 @@ struct frame_info * check_frame_info(char * b) {
   return ret;
 }
 
-int interactive_player(char * file_name, char * artist, char * title) {
+int interactive_player(char * file_name, char * artist, char * title, float volume) {
   printf("[ ] pause/resume, [a/d] jump left/right, [0-9] jump to position, [w/s] increase/decrease volume, [e] skip, [q] quit\nNow playing: %s - %s\n\n", artist, title);
   play_file(file_name);
 
@@ -100,17 +100,42 @@ int interactive_player(char * file_name, char * artist, char * title) {
 
   int paused = 0;
   char progress[50];
+  float length = -1;
+  int ret = END;
   do {
     FD_ZERO(&read_fds);
     FD_SET(from_player, &read_fds);
     FD_SET(STDIN_FILENO, &read_fds);
     select(from_player+1, &read_fds, NULL, NULL, NULL);
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
-      switch (getchar()) {
+      char c = getchar();
+      switch (c) {
         case ' ':
           paused = !paused;
           pause_playback();
           break;
+        case 'a':
+          jump_relative(-5);
+          break;
+        case 'd':
+          jump_relative(5);
+          break;
+        case 'w':
+          volume = volume >= 95 ? 100 : volume + 5;
+          set_volume(volume);
+          break;
+        case 's':
+          volume = volume <= 5 ? 0 : volume - 5;
+          set_volume(volume);
+          break;
+        case 'e':
+          ret = SKIP;
+          break;
+        case 'q':
+          ret = QUIT;
+          break;
+        default:
+          if (length != -1 && '0' <= c && c <= '9') jump_absolute((c - '0') / 10.f * length);
       }
     }
     if (FD_ISSET(from_player, &read_fds)) {
@@ -119,32 +144,24 @@ int interactive_player(char * file_name, char * artist, char * title) {
       if (i != NULL) {
         float s = i->seconds;
         float sl = i->seconds_left;
+        if (length == -1) length = s + sl;
         int is = (int)s;
         int isl = (int)sl;
-        int f = (int)(s/(s+sl)*sizeof(progress)+.5);
+        int f = (int)(s / length * sizeof(progress) + .5);
         for (int j = 0; j < sizeof(progress); j++) progress[j] = j < f ? '#' : '-';
-        printf("\x1b[1F\x1b[2K\x1b[1F\x1b[2KNow playing %s - %s %s\n%d:%02d [%s] %d:%02d \n", artist, title, paused ? "[PAUSED]" : "", is/60, is%60, progress, isl/60, isl%60);
+        printf("\x1b[1F\x1b[2K\x1b[1F\x1b[2KNow playing: %s - %s [VOLUME: %d%%] %s\n%d:%02d [%s] %d:%02d \n", artist, title, (int)volume, paused ? "[PAUSED]" : "", is/60, is%60, progress, isl/60, isl%60);
       }
     }
-  } while (!check_finished_playing(buff));
+  } while (!check_finished_playing(buff) && ret == END);
 
   tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+  return ret;
 }
 
-int main() { // sample code to play audio and read info about it
+int main() {
   int is_main = player_setup();
   if (is_main) {
-    /*play_file("./beep-test.mp3");
-    while (1) {
-        read_player(buff);
-        if (check_finished_playing(buff)) break;
-        struct frame_info * i = check_frame_info(buff);
-        if (i != NULL) {
-            struct frame_info r = *i;
-            printf("%d frames, %d frames left, %f seconds, %f seconds left\n", r.frames, r.frames_left, r.seconds, r.seconds_left);
-        }
-    }*/
-    interactive_player("./beep-test.mp3", "Artist", "Title");
+    interactive_player("./beep-test.mp3", "Artist", "Title", 100);
     disconnect_player();
   }
   return 0;
