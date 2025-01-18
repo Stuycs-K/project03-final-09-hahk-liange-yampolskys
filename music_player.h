@@ -12,6 +12,10 @@
 #include <string.h>
 #include <termios.h>
 
+#define END 0 // end of song is reached
+#define SKIP 1 // song is skipped
+#define QUIT 2 // user quits
+
 struct frame_info {
   int frames;
   int frames_left;
@@ -34,6 +38,6 @@ void jump_relative(float seconds);
 void set_volume(float percent);
 int check_finished_playing(char * b);
 struct frame_info * check_frame_info(char * b);
-void interactive_player(char * file_name, char * artist, char * title);
+int interactive_player(char * file_name, char * artist, char * title);
 
 #endif

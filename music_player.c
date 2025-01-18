@@ -85,15 +85,11 @@ struct frame_info * check_frame_info(char * b) {
   return ret;
 }
 
-
-void interactive_player(char * file_name, char * artist, char * title) {
-  printf("Now playing: %s - %s\n", artist, title);
+int interactive_player(char * file_name, char * artist, char * title) {
+  printf("[ ] pause/resume, [a/d] jump left/right, [0-9] jump to position, [w/s] increase/decrease volume, [e] skip, [q] quit\nNow playing: %s - %s\n\n", artist, title);
   play_file(file_name);
 
   fd_set read_fds;
-  FD_ZERO(&read_fds);
-  FD_SET(from_player, &read_fds);
-  FD_SET(STDIN_FILENO, &read_fds);
 
   // modify terminal options so that does not wait for enter key and does not output - only works on unix
   struct termios oldt, newt;
@@ -102,20 +98,32 @@ void interactive_player(char * file_name, char * artist, char * title) {
   newt.c_lflag &= ~(ICANON | ECHO);
   tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 
+  int paused = 0;
+  char progress[50];
   do {
     FD_ZERO(&read_fds);
     FD_SET(from_player, &read_fds);
     FD_SET(STDIN_FILENO, &read_fds);
-    int idx = select(from_player+1, &read_fds, NULL, NULL, NULL);
+    select(from_player+1, &read_fds, NULL, NULL, NULL);
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
-      char c = getchar();
-      if (c == ' ') pause_playback();
+      switch (getchar()) {
+        case ' ':
+          paused = !paused;
+          pause_playback();
+          break;
+      }
     }
     if (FD_ISSET(from_player, &read_fds)) {
       read_player(buff);
       struct frame_info * i = check_frame_info(buff);
       if (i != NULL) {
-        printf("\x1b[1F\x1b[2KNow playing %s - %s, %fs\n", artist, title, i->seconds);
+        float s = i->seconds;
+        float sl = i->seconds_left;
+        int is = (int)s;
+        int isl = (int)sl;
+        int f = (int)(s/(s+sl)*sizeof(progress)+.5);
+        for (int j = 0; j < sizeof(progress); j++) progress[j] = j < f ? '#' : '-';
+        printf("\x1b[1F\x1b[2K\x1b[1F\x1b[2KNow playing %s - %s %s\n%d:%02d [%s] %d:%02d \n", artist, title, paused ? "[PAUSED]" : "", is/60, is%60, progress, isl/60, isl%60);
       }
     }
   } while (!check_finished_playing(buff));
