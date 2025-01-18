@@ -113,8 +113,4 @@ void addToQueue(struct song_node **queueHead, struct song_node *newSong) {
         }
         current->next = songToAdd;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> c3cf160d7ce0f4bbbf835e60136bf8551b892373

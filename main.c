@@ -55,7 +55,10 @@ int main(){
           new_list[length - 1] = '\0';
         }
       }
-      if(strlen(new_list) > 0){
+      if(strlen(new_list) == 0){
+        printf("No name provided.\n");
+      }
+      else if(strlen(new_list) > 0){
         struct stat stat_buffer;
         if(stat(new_list, &stat_buffer) == 0){ 
           strncpy(list_name, new_list, sizeof(list_name));
@@ -208,6 +211,9 @@ int main(){
           }
       }
       delete_song(library, artist, title, filename);
+      save_library(library, list_name);
+      reset(library);
+      load_library(library, list_name);
       printf("\nSong removed.\n");
     }
 
