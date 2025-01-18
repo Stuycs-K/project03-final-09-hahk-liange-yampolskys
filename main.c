@@ -75,7 +75,7 @@ int main(){
       curr_song = library[0];
       if(curr_song){
         printf("Playing: %s by %s\n", curr_song->title, curr_song->artist);
-        play_file(curr_song->title);
+        play_file(curr_song->filename);
       }
       else{
         printf("\nNo songs left to play\n");
@@ -85,6 +85,7 @@ int main(){
     else if(option == 3){ //play specific song
       char artist[100];
       char title[100];
+      char filename[100];
       printf("Enter artist: ");
       if(fgets(artist, sizeof(artist), stdin)){
           int length = strlen(artist);
@@ -99,10 +100,17 @@ int main(){
             title[length-1] = '\0';
         }
       }
-      struct song_node *song = search_song(library, artist, title);
+      printf("Enter filename: ");
+      if(fgets(filename, sizeof(filename), stdin)){
+          int length = strlen(filename);
+          if(length > 0 && filename[length-1] == '\n'){
+              filename[length-1] = '\0';
+          }
+      }
+      struct song_node *song = search_song(library, artist, title, filename);
       if(song != NULL){
         printf("\nPlaying %s by %s\n", song->title, song-> artist);
-        play_file(song->title);
+        play_file(song->filename);
       }
       else{
         printf("\nSong not found.\n");
@@ -145,7 +153,7 @@ int main(){
               filename[length-1] = '\0';
           }
       }
-      add(library, artist, title);
+      add(library, artist, title, filename);
       save_library(library, list_name);
       printf("\nSong added.\n");
     }
@@ -153,6 +161,7 @@ int main(){
     else if(option == 6){ //remove song
       char artist[100];
       char title[100];
+      char filename[100];
       printf("Enter artist: ");
       if(fgets(artist, sizeof(artist), stdin)){
           int length = strlen(artist);
@@ -167,13 +176,21 @@ int main(){
               title[length-1] = '\0';
           }
       }
-      delete_song(library, artist, title);
+      printf("Enter filename: ");
+      if(fgets(filename, sizeof(filename), stdin)){
+          int length = strlen(filename);
+          if(length > 0 && filename[length-1] == '\n'){
+              filename[length-1] = '\0';
+          }
+      }
+      delete_song(library, artist, title, filename);
       printf("\nSong removed.\n");
     }
 
     else if(option == 7){ //look up song
       char artist[100];
       char title[100];
+      char filename[100];
       printf("Enter artist: ");
       if(fgets(artist, sizeof(artist), stdin)){
         int length = strlen(artist);
@@ -188,7 +205,14 @@ int main(){
               title[length-1] = '\0';
           }
       }
-      struct song_node *song = search_song(library, artist, title);
+      printf("Enter filename: ");
+      if(fgets(filename, sizeof(filename), stdin)){
+          int length = strlen(filename);
+          if(length > 0 && filename[length-1] == '\n'){
+              filename[length-1] = '\0';
+          }
+      }
+      struct song_node *song = search_song(library, artist, title, filename);
       if(song){
         printf("\nFound %s by %s.\n", song->title, song->artist);
       }
