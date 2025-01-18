@@ -80,7 +80,7 @@ void load_library(struct song_node ** library, char *filename){
   }
 
   close(musicFile);
-  printf("Library loaded from %s", filename);
+  //printf("Library loaded from %s", filename);
 }
 
 void add_library(struct song_node **library, char *artist, char *title){

@@ -8,7 +8,7 @@
 #include "file.h"
 #include "music_player.h"
 #include "player.h"
-#define default_list "playlist.txt"
+#define default_list "none"
 
 int main(){
   signal(SIGINT, sighandler);
@@ -218,7 +218,13 @@ int main(){
     }
 
     else if(option == 7){ //play
-      curr_song = library[0];
+      curr_song = NULL;
+      for(int i = 0; i < 27; i++){
+        if(library[i]){
+          curr_song = library[i]; 
+          break;
+        }
+      }
       if(curr_song){
         printf("Playing: %s by %s\n", curr_song->title, curr_song->artist);
         play_file(curr_song->filename);
@@ -262,15 +268,30 @@ int main(){
     }
 
     else if(option == 11){ //delete playlist of choice
+      char deleted_list[100];
       printf("Enter playlist name to delete: ");
-      if(fgets(list_name, sizeof(list_name), stdin)){
-        int length = strlen(list_name);
-        if(length > 0 && list_name[length - 1] == '\n'){
-          list_name[length - 1] = '\0';
+      if(fgets(deleted_list, sizeof(deleted_list), stdin)){
+        int length = strlen(deleted_list);
+        if(length > 0 && deleted_list[length - 1] == '\n'){
+          deleted_list[length - 1] = '\0';
         }
       }
-      remove(list_name);
-      printf("\n%s deleted.\n", list_name);
+      struct stat stat_buffer;
+      if(stat(deleted_list, &stat_buffer) != 0){
+        printf("\nPlaylist does not exist.\n");
+      }
+      else{
+        if(remove(deleted_list) == 0){
+          printf("\n%s deleted.\n", list_name);
+        }
+        if(strcmp(deleted_list, list_name) == 0){
+          strcpy(list_name, "None");
+          reset(library);
+        }
+        else{
+          perror("Failed to delete playlist");
+        }
+      }
     }
 
     else if(option == 12){ //save and exit
