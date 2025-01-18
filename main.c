@@ -219,7 +219,7 @@ int main(){
     else if(option == 7){ //play
       curr_song = library[0];
       if(curr_song){
-        interactive_player(curr_song->filename, curr_song->artist, curr_song->title);
+        queueSongs(library, curr_song);
       }
       else{
         printf("\nNo songs left to play\n");
