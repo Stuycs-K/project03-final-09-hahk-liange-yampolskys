@@ -128,3 +128,6 @@ Tested the functions for additional bugs and made improvements to load and view 
 
 ### 2025-01-18, 3:45 P.M - Edited main.c for filename field
 Modified main.c to include filename parameter. Also removed skip function in main and reorganized order.
+
+### 2025-01-18, 5:07 P.M - Fixed errors with saving and loading 
+Fixed save and load playlist function and changed node.c remove node function. Also changed save library and load library so now title artist and filename are properly read.
