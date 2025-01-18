@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <sys/stat.h>
+#include <signal.h>
 #include <stdlib.h>
 #include <string.h>
 #include "node.h"
@@ -9,13 +11,14 @@
 #define default_list "playlist.txt"
 
 int main(){
+  signal(SIGINT, sighandler);
   struct song_node **library = init();
   char list_name[100] = default_list;
-  int player = player_setup()
+  load_library(library, list_name);
+  int player = player_setup();
   int option = 0;
   char input[100];
   struct song_node *curr_song = NULL;
-  load_library(library, list_name);
 
   while(option != 13){
     printf("\n__________________________\n");
@@ -43,8 +46,29 @@ int main(){
     }
 
     if(option == 1){ //load & view
-      printf("\nViewing playlist:\n");
+      char new_list[100];
+      printf("\nCurrent playlist: %s\n", list_name);
       print_library(library);
+      printf("\nEnter name of the playlist to load: ");
+      if(fgets(new_list, sizeof(new_list), stdin)){
+        int length = strlen(new_list);
+        if(length > 0 && new_list[length - 1] == '\n'){
+          new_list[length - 1] = '\0';
+        }
+      }
+      if(strlen(new_list) > 0){
+        struct stat stat_buffer;
+        if(stat(new_list, &stat_buffer) == 0){ 
+          strncpy(list_name, new_list, sizeof(list_name));
+          reset(library); 
+          load_library(library, list_name); 
+          printf("\nLoaded playlist: %s\n", list_name);
+          print_library(library);
+        } 
+        else{ 
+          printf("\nPlaylist does not exist.\n");
+        }
+      }
     }
 
     else if(option == 2){ //play
@@ -70,10 +94,10 @@ int main(){
       }
       printf("Enter title: ");
       if(fgets(title, sizeof(title), stdin)){
-          int length = strlen(title);
-          if(length > 0 && title[length-1] == '\n'){
-              title[length-1] = '\0';
-          }
+        int length = strlen(title);
+        if(length > 0 && title[length-1] == '\n'){
+            title[length-1] = '\0';
+        }
       }
       struct song_node *song = search_song(library, artist, title);
       if(song != NULL){
@@ -86,9 +110,9 @@ int main(){
     }
 
     else if(option == 4){ //skip song
-      if(curr_song & curr_song->next){
+      if(curr_song && curr_song->next){
         curr_song= curr_song->next;
-        printf("\n Now playing: %s by %s", next_song->title, next_song->artist);
+        printf("\n Now playing: %s by %s", curr_song->title, curr_song->artist);
         play_file(curr_song-> filename);
       }
       else{
@@ -99,7 +123,7 @@ int main(){
     else if(option == 5){ //add song
       char artist[100];
       char title[100];
-      cahr filename[100];
+      char filename[100];
       printf("Enter artist: ");
       if(fgets(artist, sizeof(artist), stdin)){
           int length = strlen(artist);
@@ -122,6 +146,7 @@ int main(){
           }
       }
       add(library, artist, title);
+      save_library(library, list_name);
       printf("\nSong added.\n");
     }
 
@@ -186,7 +211,7 @@ int main(){
     }
 
     else if(option == 9){//shuffle playlist
-      shuffle_play(library) 
+      shufflePlay(library); 
     }
 
     else if(option == 10){ //loop playlist
@@ -199,42 +224,54 @@ int main(){
     } 
 
     else if(option == 11){ //create new playlist
-    //  char list_name[100];
+      char new_list[100];
       printf("Enter new playlist name: ");
-      if(fgets(list_name, sizeof(list_name), stdin)){
-        int length = strlen(list_name);
-        if(length > 0 && list_name[length - 1] == '\n'){
-          list_name[length -1] = '\0';
+      if(fgets(new_list, sizeof(new_list), stdin)){
+        int length = strlen(new_list);
+        if(length > 0 && new_list[length - 1] == '\n'){
+          new_list[length -1] = '\0';
         }
       }
-      save_library(library, list_name);
-      printf("\n%s saved to playlists.\n", list_name);
+      if(strlen(new_list) > 0){
+        strncpy(list_name, new_list, sizeof(list_name));
+        reset(library);
+        save_library(library, list_name);
+        printf("\n%s created.\n", list_name);
+      } 
+      else{
+        printf("\nPlaylist name cannot be empty.\n");
+      }    
     }
 
     else if(option == 12){ //delete playlist of choice
-      char name[100];
-      printf("Enter playlist name: ");
-      if(fgets(name, sizeof(name), stdin)){
-        int length = strlen(name);
-        if(length > 0 && name[length - 1] == '\n'){
-
+      printf("Enter playlist name to delete: ");
+      if(fgets(list_name, sizeof(list_name), stdin)){
+        int length = strlen(list_name);
+        if(length > 0 && list_name[length - 1] == '\n'){
+          list_name[length - 1] = '\0';
         }
       }
-
-      printf("\n%s deleted.\n", name);
-  }
+      remove(list_name);
+      printf("\n%s deleted.\n", list_name);
+    }
 
     else if(option == 13){ //save and exit
       save_library(library, list_name);
       printf("\nPlaylist saved.\n");
       reset(library);
       free(library);
+      if(player){
+        disconnect_player();
+      }
+      kill(0, SIGKILL);
+      printf("\nClosing...\n");
     }
 
     else{
-      printf("\nInvalid option. Please try again.\n");
+        printf("\nInvalid option. Please try again.\n");
+      }
     }
-  }
+
 
     return 0;
-}
+  }

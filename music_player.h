@@ -11,7 +11,7 @@
 #include <fcntl.h>
 
 extern int to_player;
-extern from_player; //searched up; extern basically defines variables in single c file
+extern int from_player; //searched up; extern basically defines variables in single c file
 extern char buff[1000];
 void check_mpg123();
 void connect_player();

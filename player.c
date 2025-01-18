@@ -9,9 +9,11 @@
 #include "music_player.h"
 
 //handle signals
-static void sighandler(int signo) {
+void sighandler(int signo) {
     if (signo == SIGINT) {
         printf("\nTerminating playback...\n");
+        disconnect_player();
+        kill(0, SIGKILL); // b/c when ctrl+c, child processes arent killed 
         exit(0);
     }
 }

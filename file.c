@@ -47,7 +47,7 @@ void load_library(struct song_node ** library, char *filename){
   while((bytes = read(musicFile, buffer, 1)) > 0){
     if(buffer[0] == '\n' || index >= sizeof(line) - 1){
       line[index] = '\0';
-      char *divide = strchr(line, '|');
+      char *divide = strchr(line, ' ');
       if(divide){
         *divide = '\0';
         char *artist = line;
