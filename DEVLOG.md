@@ -127,4 +127,4 @@ Completed loop, shuffle, create playlist, delete playlist, play song, and skip s
 Tested the functions for additional bugs and made improvements to load and view playlist and player.c. Will continue reviewing tomorrow.
 
 ### 2025-01-18, 3:45 P.M - Edited main.c for filename field
-Modified main.c to include filename parameter.
+Modified main.c to include filename parameter. Also removed skip function in main and reorganized order.
