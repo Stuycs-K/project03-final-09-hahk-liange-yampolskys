@@ -1,13 +1,13 @@
 #ifndef NODE_H
 #define NODE_H
 
-struct song_node {char artist[100]; char title[100]; char filename[100] struct song_node *next;};
+struct song_node {char artist[100]; char title[100]; char filename[100]; struct song_node *next;};
 
 void print(struct song_node * m);
-struct song_node* createnode(char *artist, char *title, char *filename struct song_node *next);
+struct song_node* createnode(char *artist, char *title, char *filename, struct song_node *next);
 
 void print_list(struct song_node *list);
-struct song_node * insert_front(struct song_node * list, char *artist, char* title. char* filename);
+struct song_node * insert_front(struct song_node * list, char *artist, char* title, char* filename);
 struct song_node * free_list(struct song_node * list);
 struct song_node * remove_node_by_index(struct song_node * list, int index);
 struct song_node * find_artist(struct song_node * list, char *artist);
