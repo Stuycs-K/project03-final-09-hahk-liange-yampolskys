@@ -147,12 +147,11 @@ int main(){
       }
       struct song_node *song = search_song(library, artist, title, filename);
       if(song != NULL){
-        printf("\nPlaying %s by %s\n", song->title, song-> artist);
-        play_file(song->filename);
+        interactive_player(song->filename, song->artist, song->title);
       }
       else{
         printf("\nSong not found.\n");
-      }    
+      }
     }
 
     else if(option == 5){ //add song
@@ -220,8 +219,7 @@ int main(){
     else if(option == 7){ //play
       curr_song = library[0];
       if(curr_song){
-        printf("Playing: %s by %s\n", curr_song->title, curr_song->artist);
-        play_file(curr_song->filename);
+        interactive_player(curr_song->filename, curr_song->artist, curr_song->title);
       }
       else{
         printf("\nNo songs left to play\n");

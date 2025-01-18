@@ -3,6 +3,7 @@
 int to_player;
 int from_player;
 char buff[1000];
+float volume = 100;
 
 void connect_player() {
   to_player = open("to_player", O_WRONLY, 0);
@@ -93,7 +94,7 @@ struct frame_info * check_frame_info(char * b) {
   return ret;
 }
 
-int interactive_player(char * file_name, char * artist, char * title, float volume) {
+int interactive_player(char * file_name, char * artist, char * title) {
   printf("[ ] pause/resume, [a/d] jump left/right, [0-9] jump to position, [w/s] increase/decrease volume, [e] skip, [q] quit\nNow playing: %s - %s\n\n", artist, title);
   play_file(file_name);
 
@@ -138,9 +139,11 @@ int interactive_player(char * file_name, char * artist, char * title, float volu
           break;
         case 'e':
           ret = SKIP;
+          stop_playback();
           break;
         case 'q':
           ret = QUIT;
+          stop_playback();
           break;
         default:
           if (length != -1 && '0' <= c && c <= '9') jump_absolute((c - '0') / 10.f * length);

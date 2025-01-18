@@ -75,11 +75,7 @@ void loop(struct song_node **library, struct song_node *song) {
     signal(SIGINT, sighandler);
 
     while (1) {
-        play_file(song->filename);
-
-        do {
-            read_player(buff);
-        } while (!check_finished_playing(buff));
+        interactive_player(song->filename, song->artist, song->title);
     }
 }
 
@@ -89,12 +85,7 @@ void queueSongs(struct song_node **library, struct song_node *queueHead) {
     signal(SIGINT, sighandler);
 
     while (current) {
-        play_file(current->filename);
-
-        do {
-            read_player(buff);
-        } while (!check_finished_playing(buff));
-
+        interactive_player(current->filename, current->artist, current->title);
         current = current->next;
     }
 }
