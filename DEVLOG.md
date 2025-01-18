@@ -38,8 +38,6 @@ Add documentation to player.c
 ### 2025-01-17 2:50 - fixes + documentation
 Minor fixes and documentation on node.c
 
-### 2025-01-17 10:45 - more compatibility
-Remove forking logic in player.c, use check_if_finished_playing
 ## Edmund Liang
 
 ### 2025-01-07 - Add music_player files
@@ -121,3 +119,9 @@ Encountered a practical issue on how to allow user to name and make multiple pla
 
 ### 2025-01-17, 2:47 P.M - Added more functions in main.c
 Added functions like loop, skip, delete playlist. Finished delete song and working on delete playlist.
+
+### 2025-01-17, 10:47 P.M - Worked on more functions in main.c and debugged other c files
+Completed loop, shuffle, create playlist, delete playlist, play song, and skip song. Also fixed sighandle error (control c leads to unkilled child processes) and multiple definition error (searched up extern). 
+
+### 2025-01-18, 12:56 A.M - Finished main.c
+Tested the functions for additional bugs and made improvements to load and view playlist and player.c. Will continue reviewing tomorrow.
