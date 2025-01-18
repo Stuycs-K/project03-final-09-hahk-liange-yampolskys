@@ -1,5 +1,9 @@
 #include "music_player.h"
 
+int to_player;
+int from_player;
+char buff[1000];
+
 void check_mpg123() {
 
 }
@@ -49,6 +53,19 @@ int check_finished_playing(char * b) {
   return b[1] == 'P' && b[3] == '0';
 }
 
+int get_to_player(){
+  return to_player;
+}
+
+int get_from_player(){
+  return from_player;
+}
+
+char* get_buff(){
+  return buff;
+}
+
+/*
 int main() {
   int is_main = player_setup();
   if (is_main) {
@@ -61,3 +78,4 @@ int main() {
   }
   return 0;
 }
+*/

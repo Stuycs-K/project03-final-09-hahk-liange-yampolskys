@@ -1,7 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 
-struct song_node {char artist[100]; char title[100]; struct song_node *next;};
+struct song_node {char artist[100]; char title[100]; char filename[100]; struct song_node *next;};
 
 void print(struct song_node * m);
 struct song_node* createnode(char *artist, char *title, struct song_node *next);
