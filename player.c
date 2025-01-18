@@ -35,29 +35,18 @@ struct song_node* shuffleNext(struct song_node **library) {
 //forks
 void shufflePlay(struct song_node **library) {
     struct song_node *current;
-    pid_t playerPid;
-
     signal(SIGINT, sighandler);
 
     while (1) {
         current = shuffleNext(library);
         if (current) {
             printf("Now playing: %s - %s\n", current->artist, current->title);
-            playerPid = fork();
-            if (playerPid == 0) {
-                play_file(current->filename);
-                exit(0);
-            } 
-            else if (playerPid > 0) {
-                int status;
-                waitpid(playerPid, &status, 0);
-            } 
-            else {
-                perror("Fork failed");
-                return;
-            }
-        } 
-        else {
+            play_file(current->filename);
+
+            do {
+                read_player(buff);
+            } while (!check_finished_playing(buff));
+        } else {
             printf("No songs available.\n");
             break;
         }
@@ -66,49 +55,30 @@ void shufflePlay(struct song_node **library) {
 
 //play the same song on repeat
 void loop(struct song_node **library, struct song_node *song) {
-    pid_t playerPid;
-
     signal(SIGINT, sighandler);
 
     while (1) {
-        playerPid = fork();
-        if (playerPid == 0) {
-            play_file(song->filename);
-            exit(0);
-        } 
-        else if (playerPid > 0) {
-            int status;
-            waitpid(playerPid, &status, 0);
-        } 
-        else {
-            perror("Fork failed");
-            return;
-        }
+        play_file(song->filename);
+
+        do {
+            read_player(buff);
+        } while (!check_finished_playing(buff));
     }
 }
 
 //play a list with queued songs
 void queueSongs(struct song_node **library, struct song_node *queueHead) {
     struct song_node *current = queueHead;
-    pid_t playerPid;
-
     signal(SIGINT, sighandler);
 
     while (current) {
-        playerPid = fork();
-        if (playerPid == 0) {
-            play_file(current->filename);
-            exit(0);
-        } 
-        else if (playerPid > 0) {
-            int status;
-            waitpid(playerPid, &status, 0);
-            current = current->next;
-        } 
-        else {
-            perror("Fork failed");
-            return;
-        }
+        play_file(current->filename);
+
+        do {
+            read_player(buff);
+        } while (!check_finished_playing(buff));
+
+        current = current->next;
     }
 }
 
