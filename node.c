@@ -108,7 +108,6 @@ struct song_node * remove_node_by_index(struct song_node * list, int index){
     if(index < 0 || list == NULL){
         return list;
     }
-
     struct song_node * x;
     if(index == 0){
         x = list->next;
@@ -117,14 +116,14 @@ struct song_node * remove_node_by_index(struct song_node * list, int index){
     }
     struct song_node *start = list;
     for (int i = 0; i < index - 1; i++) {
-        if (list == NULL || list->next == NULL) return start;
-        list = list->next;
+        if (start == NULL || start->next == NULL) return list;
+        start = start->next;
     }
-    struct song_node *node_to_remove = list->next;
-    if (node_to_remove == NULL) return start;
-    list->next = node_to_remove->next;
+    struct song_node *node_to_remove = start->next;
+    if (node_to_remove == NULL) return list;
+    start->next = node_to_remove->next;
     free(node_to_remove);
-    return start;
+    return list;
 }
 
 int compare(struct song_node *a, struct song_node *b) {
