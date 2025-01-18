@@ -87,6 +87,7 @@ int main(){
 
     else if(option == 4){ //skip song
       if(curr_song & curr_song->next){
+        curr_song= curr_song->next;
         printf("\n Now playing: %s by %s", next_song->title, next_song->artist);
         play_file(curr_song-> filename);
       }
