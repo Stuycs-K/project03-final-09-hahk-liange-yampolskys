@@ -38,6 +38,8 @@ Add documentation to player.c
 ### 2025-01-17 2:50 - fixes + documentation
 Minor fixes and documentation on node.c
 
+### 2025-01-17 10:45 - more compatibility
+Remove forking logic in player.c, use check_if_finished_playing
 ## Edmund Liang
 
 ### 2025-01-07 - Add music_player files
