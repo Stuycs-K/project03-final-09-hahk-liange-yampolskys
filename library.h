@@ -13,8 +13,7 @@ void print_library(struct song_node ** library);
 void shuffle (struct song_node ** library, int n);
 int delete_song(struct song_node ** library, char* artist, char* title );
 void reset(struct song_node ** library);
-
-
+int numFilled(struct song_node ** library);
 
 //HELPER METHODS
 int *filledSlots(struct song_node ** library);

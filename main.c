@@ -4,7 +4,7 @@
 #include "node.h"
 #include "library.h"
 #include "file.h"
-
+#include "music_player.h"
 #define list_name "playlist.txt"
 
 int main(){
@@ -45,17 +45,15 @@ int main(){
         struct song_node *first_song = library[0];
         if(first_song != NULL){
           printf("Playing: %s by %s\n", first_song->title, first_song->artist);
-          playfile(first_song->title);
+          play_file(first_song->title); //error: undefined reference to play_file
         }
       }
       else{
         printf("\nNo songs left to play\n");
       }
 
-    }
-
     else if(option == 3){ //play specific song
-      c
+      
 
       }
 
@@ -175,7 +173,7 @@ int main(){
         }
       }
 
-      printf("\n%s deleted.\n", name)
+      printf("\n%s deleted.\n", name);
   }
 
     else if(option == 12){ //save and exit
