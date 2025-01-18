@@ -22,8 +22,10 @@ void save_library(struct song_node ** library, char *filename){
     struct song_node *curr = library[i];
     while(curr){
       write(musicFile, curr->artist, strlen(curr->artist));
-      write(musicFile," | " , 1);
+      write(musicFile,"|" , 1);
       write(musicFile, curr->title, strlen(curr->title));
+      write(musicFile,"|", 1);
+      write(musicFile, curr->filename, strlen(curr->filename));
       write(musicFile,"\n" , 1);
       curr = curr->next;
     }
@@ -47,18 +49,28 @@ void load_library(struct song_node ** library, char *filename){
   while((bytes = read(musicFile, buffer, 1)) > 0){
     if(buffer[0] == '\n' || index >= sizeof(line) - 1){
       line[index] = '\0';
-      char *divide = strchr(line, ' ');
-      if(divide){
-        *divide = '\0';
-        char *artist = line;
-        char *title = divide + 1;
+
+      char *line_pointer = line;
+      char *artist = strsep(&line_pointer, "|");
+      char *title = strsep(&line_pointer, "|");
+      char *filename = strsep(&line_pointer, "|");
+      if(artist && title && filename){
+        while(*artist == ' '){
+          artist++;
+        }
+        while(*title == ' '){
+          title++;
+        }
+        while(*filename == ' '){
+          filename++;
+        }
         if(artist[0] >= 'A' && artist[0] <= 'Z'){
           list = artist[0] - 'A';
         }
         else{
           list = 26;
         }
-        library[list] = insert_alph(library[list], artist, title);
+        library[list] = insert_alph(library[list], artist, title, filename);
       }
       index = 0;
     }
@@ -80,7 +92,7 @@ void add_library(struct song_node **library, char *artist, char *title){
       list = 26;
     }
 
-    library[list] = insert_alph(library[list], artist, title);
+    library[list] = insert_alph(library[list], artist, title, NULL);
     printf("Song added: %s , %s\n", artist, title);
 }
 

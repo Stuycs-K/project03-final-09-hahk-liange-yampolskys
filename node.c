@@ -20,17 +20,13 @@ void print(struct song_node * m){
 
 
 void print_list(struct song_node *list) {
- //need to fix formatting
     printf("[");
-    while (list->next != NULL) {
-        printf(" {");
-        print(list);
-        printf("} |");
+    while (list) {
+        printf("{%s, %s, %s}", list->artist, list->title, list->filename);
         list = list->next;
+        if (list) printf(", ");
     }
-    printf(" {");
-    print(list);
-    printf("} ]");
+    printf("]\n");
 }
 
 struct song_node *insert_front(struct song_node *list, char *artist, char*filename, char *title) {
@@ -65,12 +61,11 @@ struct song_node * find_song(struct song_node * list, char *artist, char *title,
             if(strcmp(list->artist, artist) == 0 && strcmp(list->title, title) == 0 &&  strcmp(list->filename, filename) == 0){
                 return list;
             }
+            list = list->next;
         printf("reached end of pass\n");
         list = list->next;
     }
-
-
-
+    
     return NULL;
 }
 
@@ -96,10 +91,10 @@ struct song_node * chooseRandom(struct song_node * list){
 
 }
 // HELPER/DEBUGGING METHOD
-int songIndex(struct song_node *list, char *artist, char *title){
+int songIndex(struct song_node *list, char *artist, char *title, char* filename){
     int count = 0;
     while(list != NULL){
-            if(strcmp(list->artist, artist) == 0 && strcmp(list->title, title) == 0){
+            if(strcmp(list->artist, artist) == 0 && strcmp(list->title, title) == 0 && strcmp(list->filename, filename) == 0){
                 return count;
             }
         count += 1;
@@ -113,7 +108,6 @@ struct song_node * remove_node_by_index(struct song_node * list, int index){
     if(index < 0 || list == NULL){
         return list;
     }
-
     struct song_node * x;
     if(index == 0){
         x = list->next;
@@ -122,14 +116,14 @@ struct song_node * remove_node_by_index(struct song_node * list, int index){
     }
     struct song_node *start = list;
     for (int i = 0; i < index - 1; i++) {
-        if (list == NULL || list->next == NULL) return start;
-        list = list->next;
+        if (start == NULL || start->next == NULL) return list;
+        start = start->next;
     }
-    struct song_node *node_to_remove = list->next;
-    if (node_to_remove == NULL) return start;
-    list->next = node_to_remove->next;
+    struct song_node *node_to_remove = start->next;
+    if (node_to_remove == NULL) return list;
+    start->next = node_to_remove->next;
     free(node_to_remove);
-    return start;
+    return list;
 }
 
 int compare(struct song_node *a, struct song_node *b) {

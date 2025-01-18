@@ -4,32 +4,28 @@ int to_player;
 int from_player;
 char buff[1000];
 
-void check_mpg123() {
-
-}
-
 void connect_player() {
   to_player = open("to_player", O_WRONLY, 0);
   from_player = open("from_player", O_RDONLY, 0);
 }
 
 int player_setup() {
-  pid_t p = fork();
   mkfifo("to_player", 0777);
   mkfifo("from_player", 0777);
+  pid_t p = fork();
   if (p < 0) {
     perror("fork fail");
     exit(1);
   } else if (p == 0) {
     char * args[] = {"mpg123", "-R", NULL};
 
-	int inp = open("to_player", O_RDONLY);
-	if (inp == -1 || dup2(inp, fileno(stdin)) == -1) return 0;	
-	close(inp);
+    int inp = open("to_player", O_RDONLY);
+    if (inp == -1 || dup2(inp, STDIN_FILENO) == -1) return 0;
+    close(inp);
 
     int tar = open("from_player", O_WRONLY, 0);
-	if (tar == -1 || dup2(tar, fileno(stdout)) == -1) return 0;
-	close(tar);
+    if (tar == -1 || dup2(tar, STDOUT_FILENO) == -1) return 0;
+    close(tar);
 
     execvp(args[0], args);
     return 0;
@@ -73,7 +69,7 @@ void jump_absolute(float seconds) {
 }
 
 void jump_relative(float seconds) {
-  sprintf(buff, seconds > 0 ? "J +%fs\n" : "J -%fs\n", seconds);
+  sprintf(buff, seconds > 0 ? "J +%fs\n" : "J %fs\n", seconds);
   write_player(buff);
 }
 
@@ -90,11 +86,91 @@ int get_to_player(){
   return to_player;
 }
 
+struct frame_info * check_frame_info(char * b) {
+  if (b[1] != 'F') return NULL;
+  struct frame_info * ret = malloc(sizeof(struct frame_info));
+  sscanf(b + 3, "%d %d %f %f", (int *)ret, (int *)ret + 1, (float *)ret + 2, (float *)ret + 3);
+  return ret;
+}
+
+int interactive_player(char * file_name, char * artist, char * title, float volume) {
+  printf("[ ] pause/resume, [a/d] jump left/right, [0-9] jump to position, [w/s] increase/decrease volume, [e] skip, [q] quit\nNow playing: %s - %s\n\n", artist, title);
+  play_file(file_name);
+
+  fd_set read_fds;
+
+  // modify terminal options so that does not wait for enter key and does not output - only works on unix
+  struct termios oldt, newt;
+  tcgetattr(STDIN_FILENO, &oldt);
+  newt = oldt;
+  newt.c_lflag &= ~(ICANON | ECHO);
+  tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+
+  int paused = 0;
+  char progress[50];
+  float length = -1;
+  int ret = END;
+  do {
+    FD_ZERO(&read_fds);
+    FD_SET(from_player, &read_fds);
+    FD_SET(STDIN_FILENO, &read_fds);
+    select(from_player+1, &read_fds, NULL, NULL, NULL);
+    if (FD_ISSET(STDIN_FILENO, &read_fds)) {
+      char c = getchar();
+      switch (c) {
+        case ' ':
+          paused = !paused;
+          pause_playback();
+          break;
+        case 'a':
+          jump_relative(-5);
+          break;
+        case 'd':
+          jump_relative(5);
+          break;
+        case 'w':
+          volume = volume >= 95 ? 100 : volume + 5;
+          set_volume(volume);
+          break;
+        case 's':
+          volume = volume <= 5 ? 0 : volume - 5;
+          set_volume(volume);
+          break;
+        case 'e':
+          ret = SKIP;
+          break;
+        case 'q':
+          ret = QUIT;
+          break;
+        default:
+          if (length != -1 && '0' <= c && c <= '9') jump_absolute((c - '0') / 10.f * length);
+      }
+    }
+    if (FD_ISSET(from_player, &read_fds)) {
+      read_player(buff);
+      struct frame_info * i = check_frame_info(buff);
+      if (i != NULL) {
+        float s = i->seconds;
+        float sl = i->seconds_left;
+        if (length == -1) length = s + sl;
+        int is = (int)s;
+        int isl = (int)sl;
+        int f = (int)(s / length * sizeof(progress) + .5);
+        for (int j = 0; j < sizeof(progress); j++) progress[j] = j < f ? '#' : '-';
+        printf("\x1b[1F\x1b[2K\x1b[1F\x1b[2KNow playing: %s - %s [VOLUME: %d%%] %s\n%d:%02d [%s] %d:%02d \n", artist, title, (int)volume, paused ? "[PAUSED]" : "", is/60, is%60, progress, isl/60, isl%60);
+      }
+    }
+  } while (!check_finished_playing(buff) && ret == END);
+
+  tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+  return ret;
+}
+
 int get_from_player(){
   return from_player;
 }
 
-char* get_buff(){
+char * get_buff(){
   return buff;
 }
 
@@ -102,16 +178,7 @@ char* get_buff(){
 int main() {
   int is_main = player_setup();
   if (is_main) {
-    play_file("./beep-test.mp3");
-    while (1) {
-        read_player(buff);
-        if (check_finished_playing(buff)) break;
-        struct frame_info * i = check_frame_info(buff);
-        if (i != NULL) {
-            struct frame_info r = *i;
-            printf("%d frames, %d frames left, %f seconds, %f seconds left\n", r.frames, r.frames_left, r.seconds, r.seconds_left);
-        }
-    }
+    interactive_player("./beep-test.mp3", "Artist", "Title", 100);
     disconnect_player();
   }
   return 0;
