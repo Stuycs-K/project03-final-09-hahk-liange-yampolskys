@@ -131,3 +131,7 @@ Modified main.c to include filename parameter. Also removed skip function in mai
 
 ### 2025-01-18, 5:07 P.M - Fixed errors with saving and loading 
 Fixed save and load playlist function and changed node.c remove node function. Also changed save library and load library so now title artist and filename are properly read.
+
+### 2025-01-18, 7:16 P.M - Fixed errors with empty playlist and deleting 
+Modified main.c so user has to create playlist first. Added errors if any input was left blank and tested it.
+ 
