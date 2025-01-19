@@ -5,12 +5,7 @@ int from_player;
 char buff[1000];
 float volume = 100;
 
-void connect_player() {
-  to_player = open("to_player", O_WRONLY, 0);
-  from_player = open("from_player", O_RDONLY, 0);
-}
-
-int player_setup() {
+void player_setup() {
   mkfifo("to_player", 0777);
   mkfifo("from_player", 0777);
   pid_t p = fork();
@@ -29,10 +24,9 @@ int player_setup() {
     close(tar);
 
     execvp(args[0], args);
-    return 0;
   } else {
-    connect_player();
-    return 1;
+    to_player = open("to_player", O_WRONLY, 0);
+    from_player = open("from_player", O_RDONLY, 0);
   }
 }
 
@@ -179,11 +173,9 @@ int interactive_player(char * file_name, char * artist, char * title) {
 
 /*
 int main() {
-  int is_main = player_setup();
-  if (is_main) {
-    while (1) interactive_player("beep-test.mp3", "Artist", "Title");
-    disconnect_player();
-  }
+  player_setup();
+  while (1) interactive_player("beep-test.mp3", "Artist", "Title");
+  disconnect_player();
   return 0;
 }
 */

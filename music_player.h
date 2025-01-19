@@ -27,9 +27,7 @@ extern int to_player;
 extern int from_player; //searched up; extern basically defines variables in single c file
 extern char buff[1000];
 extern float volume;
-void check_mpg123();
-void connect_player();
-int player_setup();
+void player_setup();
 void disconnect_player();
 void read_player(char * b);
 void write_player(char * b);

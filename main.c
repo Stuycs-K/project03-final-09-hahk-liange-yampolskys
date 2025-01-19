@@ -15,7 +15,7 @@ int main(){
   struct song_node **library = init();
   char list_name[100] = "";
   load_library(library, list_name);
-  int player = player_setup();
+  player_setup();
   int option = 0;
   char input[100];
   struct song_node *curr_song = NULL;
