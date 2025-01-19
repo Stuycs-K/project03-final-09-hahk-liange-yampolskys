@@ -42,8 +42,7 @@ void load_library(struct song_node ** library, char *filename){
   int list;
   int musicFile = open(filename, O_RDONLY);
   if(musicFile == -1){
-    perror("No library detected. New library created\n");
-    return;;
+    return;
   }
 
   while((bytes = read(musicFile, buffer, 1)) > 0){
