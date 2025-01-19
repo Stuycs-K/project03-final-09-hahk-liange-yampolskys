@@ -156,7 +156,7 @@ int interactive_player(char * file_name, char * artist, char * title) {
       read_player(buff);
       char * error = check_error(buff);
       if (error != NULL) {
-        perror("Error: %s\n", error);
+        fprintf(stderr, "Error: %s\n", error);
         ret = QUIT;
         break;
       }
