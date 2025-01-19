@@ -29,7 +29,6 @@ void fisherYatesShuffle(struct song_node **array, int size) {
 }
 
 //play songs in shuffled order
-//forks
 void shufflePlay(struct song_node **library) {
     struct song_node *songArray[1000];
     int count = 0;
@@ -53,11 +52,7 @@ void shufflePlay(struct song_node **library) {
 
     for (int i = 0; i < count; i++) {
         printf("Now playing: %s - %s\n", songArray[i]->artist, songArray[i]->title);
-        play_file(songArray[i]->filename);
-
-        do {
-            read_player(buff);
-        } while (!check_finished_playing(buff));
+        if (interactive_player(songArray[i]->filename, songArray[i]->artist, songArray[i]->title) == QUIT) break;
     }
 }
 
