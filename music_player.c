@@ -109,7 +109,7 @@ int interactive_player(char * file_name, char * artist, char * title) {
 
   int paused = 0;
   char progress[51];
-  progress[sizeof(progress)] = '\0';
+  progress[sizeof(progress) - 1] = '\0';
   float length = -1;
   int ret = END;
   do {
