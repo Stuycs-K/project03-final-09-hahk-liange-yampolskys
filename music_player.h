@@ -40,6 +40,7 @@ void jump_absolute(float seconds);
 void jump_relative(float seconds);
 void set_volume(float percent);
 int check_finished_playing(char * b);
+char * check_error(char * b);
 struct frame_info * check_frame_info(char * b);
 int interactive_player(char * file_name, char * artist, char * title);
 int get_to_player();

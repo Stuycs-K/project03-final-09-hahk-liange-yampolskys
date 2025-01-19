@@ -48,7 +48,7 @@ void read_player(char * b) {
 }
 
 void write_player(char * b) {
-  write(to_player, b, 1000);
+  write(to_player, b, strlen(b));
 }
 
 void play_file(char * file_name) {
@@ -81,6 +81,10 @@ void set_volume(float percent) {
 
 int check_finished_playing(char * b) {
   return b[1] == 'P' && b[3] == '0';
+}
+
+char * check_error(char * b) {
+  return b[1] == 'E' ? b + 3 : NULL;
 }
 
 int get_to_player(){
@@ -116,6 +120,7 @@ int interactive_player(char * file_name, char * artist, char * title) {
     FD_ZERO(&read_fds);
     FD_SET(from_player, &read_fds);
     FD_SET(STDIN_FILENO, &read_fds);
+    buff[0] = '\0';
     select(from_player+1, &read_fds, NULL, NULL, NULL);
     if (FD_ISSET(STDIN_FILENO, &read_fds)) {
       char c = getchar();
@@ -152,6 +157,12 @@ int interactive_player(char * file_name, char * artist, char * title) {
     }
     if (FD_ISSET(from_player, &read_fds)) {
       read_player(buff);
+      char * error = check_error(buff);
+      if (error != NULL) {
+        printf("%s\n", error);
+        ret = QUIT;
+        break;
+      }
       struct frame_info * i = check_frame_info(buff);
       if (i != NULL) {
         float s = i->seconds;
@@ -164,7 +175,7 @@ int interactive_player(char * file_name, char * artist, char * title) {
         printf("\x1b[1F\x1b[2K\x1b[1F\x1b[2KNow playing: %s - %s [VOLUME: %d%%] %s\n%d:%02d [%s] %d:%02d \n", artist, title, (int)volume, paused ? "[PAUSED]" : "", is/60, is%60, progress, isl/60, isl%60);
       }
     }
-  } while (!check_finished_playing(buff) && ret == END);
+  } while (!check_finished_playing(buff));
 
   tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
   return ret;
@@ -182,7 +193,7 @@ char * get_buff(){
 int main() {
   int is_main = player_setup();
   if (is_main) {
-    interactive_player("./beep-test.mp3", "Artist", "Title", 100);
+    while (1) interactive_player("beep-test.mp3", "Artist", "Title");
     disconnect_player();
   }
   return 0;
