@@ -84,15 +84,15 @@ int check_finished_playing(char * b) {
   return b[1] == 'P' && b[3] == '0';
 }
 
-char * check_error(char * b) {
-  return b[1] == 'E' ? b + 3 : NULL;
-}
-
 struct frame_info * check_frame_info(char * b) {
   if (b[1] != 'F') return NULL;
   struct frame_info * ret = malloc(sizeof(struct frame_info));
   sscanf(b + 3, "%d %d %f %f", (int *)ret, (int *)ret + 1, (float *)ret + 2, (float *)ret + 3);
   return ret;
+}
+
+char * check_error(char * b) {
+  return b[1] == 'E' ? b + 3 : NULL;
 }
 
 int interactive_player(char * file_name, char * artist, char * title) {
@@ -156,7 +156,7 @@ int interactive_player(char * file_name, char * artist, char * title) {
       read_player(buff);
       char * error = check_error(buff);
       if (error != NULL) {
-        printf("%s\n", error);
+        perror("Error: %s\n", error);
         ret = QUIT;
         break;
       }
