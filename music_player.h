@@ -12,6 +12,9 @@
 #include <string.h>
 #include <termios.h>
 
+#define READ 0
+#define WRITE 1
+
 #define END 0 // end of song is reached
 #define SKIP 1 // song is skipped
 #define QUIT 2 // user quits

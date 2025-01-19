@@ -6,8 +6,9 @@ char buff[1000];
 float volume = 100;
 
 void player_setup() {
-  mkfifo("to_player", 0777);
-  mkfifo("from_player", 0777);
+  int to_fds[2], from_fds[2];
+  pipe(to_fds);
+  pipe(from_fds);
   pid_t p = fork();
   if (p < 0) {
     perror("fork fail");
@@ -15,26 +16,32 @@ void player_setup() {
   } else if (p == 0) {
     char * args[] = {"mpg123", "-R", NULL};
 
-    int inp = open("to_player", O_RDONLY);
-    if (inp == -1 || dup2(inp, STDIN_FILENO) == -1) return 0;
-    close(inp);
+    close(to_fds[WRITE]);
+    if (dup2(to_fds[READ], STDIN_FILENO) == -1) {
+      perror("redirection fail");
+      exit(1);
+    }
+    close(to_fds[READ]);
 
-    int tar = open("from_player", O_WRONLY, 0);
-    if (tar == -1 || dup2(tar, STDOUT_FILENO) == -1) return 0;
-    close(tar);
+    close(from_fds[READ]);
+    if (dup2(from_fds[WRITE], STDOUT_FILENO) == -1) {
+      perror("redirection fail");
+      exit(1);
+    }
+    close(from_fds[WRITE]);
 
     execvp(args[0], args);
   } else {
-    to_player = open("to_player", O_WRONLY, 0);
-    from_player = open("from_player", O_RDONLY, 0);
+    close(to_fds[READ]);
+    to_player = to_fds[WRITE];
+    close(from_fds[WRITE]);
+    from_player = from_fds[READ];
   }
 }
 
 void disconnect_player() {
   close(to_player);
   close(from_player);
-  remove("to_player");
-  remove("from_player");
 }
 
 void read_player(char * b) {
