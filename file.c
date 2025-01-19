@@ -66,6 +66,9 @@ void load_library(struct song_node ** library, char *filename){
         if(artist[0] >= 'A' && artist[0] <= 'Z'){
           list = artist[0] - 'A';
         }
+        else if(artist[0] >= 'a' && artist[0] <= 'z'){
+          list = artist[0] - 'a';
+        } 
         else{
           list = 26;
         }

@@ -20,21 +20,22 @@ int main(){
   char input[100];
   struct song_node *curr_song = NULL;
 
-  while(option != 12){
+  while(option != 13){
     printf("\n__________________________\n");
     printf("\nMenu:\n");
     printf("1. Load & view playlist\n");
     printf("2. Look up a song\n");
     printf("3. Look up an artist\n");
     printf("4. Play a song\n");
-    printf("5. Add song\n");
-    printf("6. Remove song\n");
-    printf("7. Play\n");
-    printf("8. Shuffle playlist\n"); 
-    printf("9. Loop playlist\n"); 
-    printf("10. Create new playlist\n");
-    printf("11. Delete playlist\n");
-    printf("12. Save and exit\n");
+    printf("5. Loop song\n"); 
+    printf("6. Add song\n");
+    printf("7. Remove song\n");
+    printf("8. Play\n");
+    printf("9. Shuffle playlist\n"); 
+    printf("10. Loop playlist\n"); 
+    printf("11. Create new playlist\n");
+    printf("12. Delete playlist\n");
+    printf("13. Save and exit\n");
     printf("Choose an option: ");
 
     if(fgets(input, sizeof(input), stdin)){
@@ -57,6 +58,19 @@ int main(){
         }
         if(strlen(new_list) == 0){
           printf("\nERROR: Field(s) cannot be blank.\n");
+        }
+        else{
+          struct stat stat_buffer;
+          if(stat(new_list, &stat_buffer) == 0){
+              strncpy(list_name, new_list, sizeof(list_name));
+              reset(library);
+              load_library(library, list_name);
+              printf("\nLoaded playlist: %s\n", list_name);
+              print_library(library);
+            } 
+          else{
+              printf("\nERROR: Playlist does not exist.\n");
+          }
         }
         continue;
       }
@@ -195,7 +209,20 @@ int main(){
       }
     }
 
-    else if(option == 5){ //add song
+    else if(option == 5){ //loop song
+      if(strlen(list_name) == 0){
+        printf("\nERROR: Please load or create a playlist first.\n");
+        continue;
+      }
+      if(curr_song){
+        loop(library, curr_song);
+      }
+      else{
+        printf("\nERROR: No songs to loop.\n");
+      }
+    } 
+
+    else if(option == 6){ //add song
       if(strlen(list_name) == 0){
         printf("\nERROR: Please load or create a playlist first.\n");
         continue;
@@ -235,7 +262,7 @@ int main(){
     }
 
 
-    else if(option == 6){ //remove song
+    else if(option == 7){ //remove song
       if(strlen(list_name) == 0){
         printf("\nERROR: Please load or create a playlist first.\n");
         continue;
@@ -276,7 +303,7 @@ int main(){
       }
     }
 
-    else if(option == 7){ //play
+    else if(option == 8){ //play
       if(strlen(list_name) == 0){
         printf("\nERROR: Please load or create a playlist first.\n");
         continue;
@@ -296,7 +323,7 @@ int main(){
       }
     } 
 
-    else if(option == 8){//shuffle playlist
+    else if(option == 9){//shuffle playlist
       if(strlen(list_name) == 0){
         printf("\nERROR: Please load or create a playlist first.\n");
         continue;
@@ -304,20 +331,16 @@ int main(){
       shufflePlay(library); 
     }
 
-    else if(option == 9){ //loop playlist
+    else if(option == 10){ //loop playlist
       if(strlen(list_name) == 0){
         printf("\nERROR: Please load or create a playlist first.\n");
         continue;
       }
-      if(curr_song){
-        loop(library, curr_song);
-      }
-      else{
-        printf("\nERROR: No songs to loop.\n");
-      }
+      printf("\nLooping %s...", list_name);
+      loop_list(library);
     } 
 
-    else if(option == 10){ //create new playlist
+    else if(option == 11){ //create new playlist
       char new_list[100];
       printf("Enter new playlist name: ");
       if(fgets(new_list, sizeof(new_list), stdin)){
@@ -337,7 +360,7 @@ int main(){
       }    
     }
 
-    else if(option == 11){ //delete playlist of choice
+    else if(option == 12){ //delete playlist of choice
       char deleted_list[100];
       printf("Enter playlist name to delete: ");
       if(fgets(deleted_list, sizeof(deleted_list), stdin)){
@@ -364,7 +387,7 @@ int main(){
       }
     }
 
-    else if(option == 12){ //save and exit
+    else if(option == 13){ //save and exit
       if(strlen(list_name) == 0){
         printf("\nERROR: No playlist to save to. Please load or create a playlist first.\n");
       }

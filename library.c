@@ -22,7 +22,7 @@ void add(struct song_node **library, char *artist, char *title, char*filename) {
     } else {
         index = 26; // For non-letter artists
     }
-    library[index] = insert_alph(library[index], artist, filename, title);
+    library[index] = insert_alph(library[index], artist, title, filename);
 }
 
 struct song_node *search_song(struct song_node **library, char *artist, char *title, char *filename) {
@@ -90,8 +90,6 @@ void print_library(struct song_node ** library){
         }
     }
 }
-
-
 
 //HELPER
 int numFilled(struct song_node ** library){

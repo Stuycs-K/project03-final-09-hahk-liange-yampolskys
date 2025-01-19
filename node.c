@@ -133,7 +133,7 @@ int compare(struct song_node *a, struct song_node *b) {
     else return strcasecmp(a->filename, b->filename);
 }
 
-struct song_node *insert_alph(struct song_node *list, char *artist, char* filename,  char *title) {
+struct song_node *insert_alph(struct song_node *list, char *artist, char *title, char* filename) {
     struct song_node *new = createnode(artist, title,filename, NULL);
     if (!new) return list;
     if (!list || compare(new, list) < 0) {

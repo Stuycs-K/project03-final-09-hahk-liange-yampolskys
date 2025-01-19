@@ -64,6 +64,32 @@ void loop(struct song_node **library, struct song_node *song) {
         if (interactive_player(song->filename, song->artist, song->title) == QUIT) break;
     }
 }
+//play same playlist on repeat
+void loop_list(struct song_node **library){
+    signal(SIGINT, sighandler);
+    struct song_node *songArray[1000];
+    int count = 0;
+
+    for(int i = 0; i < 27; i++){
+        struct song_node *curr = library[i];
+        while(curr){
+            songArray[count++] = curr;
+            curr = curr->next;
+        }
+    }
+    
+    if(count == 0){
+        printf("\nERROR: No songs to loop.\n");
+        return;
+    }
+    while(1){
+        for(int i = 0; i < count; i++){
+            if(interactive_player(songArray[i]->filename, songArray[i]->artist, songArray[i]->title) == QUIT){
+                return;
+            }
+        }
+    }
+}
 
 //play a list with queued songs
 void queueSongs(struct song_node **library, struct song_node *queueHead) {
