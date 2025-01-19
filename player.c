@@ -18,15 +18,6 @@ void sighandler(int signo) {
     }
 }
 
-//return the filename of the next song
-//call play_file(skip(current))
-char* skip(struct song_node *current) {
-    if (current && current->next) {
-        return current->next->filename;
-    }
-    return NULL;
-}
-
 // Fisher-Yates shuffle helper function
 void fisherYatesShuffle(struct song_node **array, int size) {
     for (int i = size - 1; i > 0; i--) {
@@ -75,7 +66,7 @@ void loop(struct song_node **library, struct song_node *song) {
     signal(SIGINT, sighandler);
 
     while (1) {
-        interactive_player(song->filename, song->artist, song->title);
+        if (interactive_player(song->filename, song->artist, song->title) == QUIT) break;
     }
 }
 
@@ -85,7 +76,7 @@ void queueSongs(struct song_node **library, struct song_node *queueHead) {
     signal(SIGINT, sighandler);
 
     while (current) {
-        interactive_player(current->filename, current->artist, current->title);
+        if (interactive_player(current->filename, current->artist, current->title) == QUIT) break;
         current = current->next;
     }
 }
