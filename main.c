@@ -372,9 +372,7 @@ int main(){
       printf("\nPlaylist saved.\n");
       reset(library);
       free(library);
-      if(player){
-        disconnect_player();
-      }
+      disconnect_player();
       kill(0, SIGKILL);
       printf("\nClosing...\n");
     }
