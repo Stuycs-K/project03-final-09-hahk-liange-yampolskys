@@ -43,8 +43,5 @@ int check_finished_playing(char * b);
 char * check_error(char * b);
 struct frame_info * check_frame_info(char * b);
 int interactive_player(char * file_name, char * artist, char * title);
-int get_to_player();
-int get_from_player();
-char* get_buff();
 
 #endif

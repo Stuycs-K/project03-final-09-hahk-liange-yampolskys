@@ -87,10 +87,6 @@ char * check_error(char * b) {
   return b[1] == 'E' ? b + 3 : NULL;
 }
 
-int get_to_player(){
-  return to_player;
-}
-
 struct frame_info * check_frame_info(char * b) {
   if (b[1] != 'F') return NULL;
   struct frame_info * ret = malloc(sizeof(struct frame_info));
@@ -179,14 +175,6 @@ int interactive_player(char * file_name, char * artist, char * title) {
 
   tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
   return ret;
-}
-
-int get_from_player(){
-  return from_player;
-}
-
-char * get_buff(){
-  return buff;
 }
 
 /*
