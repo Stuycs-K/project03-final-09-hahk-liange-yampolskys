@@ -76,6 +76,51 @@ Turns out the problem was not mallocing to create the struct, so now it works.
 ### 2025-01-17, 2:43 PM - Use execvp and redirection instead of system
 Using system takes longer to parse the arguments and is platform-dependent, so switch to using execvp and redirection.
 
+### 2025-01-17, 7:25 PM - Fix node.h
+Fix minor syntax errors in node.h.
+
+### 2025-01-18, 2:07 PM - Start working on interactive player
+Start working on an interactive player, which is a stretch goal but will make the user interface cleaner. It will accept keyboard input to control the music player, and will display the progression of the song. select is used to listen to both stdin and the player, and termios is used to make it so that key presses are not outputted and are sent one at a time instead of waiting for Enter. ANSI codes are used to redraw the output.
+
+### 2025-01-18, 3:37 PM - Add instructions and progress bar, allow function to return int to describe how the song stopped
+Add instructions for user input and a visual progress bar. The function is changed to int so that it can return END, SKIP, or QUIT to describe how the song stopped.
+
+### 2025-01-18, 4:53 PM - Fix jump_relative, add functionality for the rest of the options
+Fix jump_relative as it did not work for negative numbers, and add functionality for jumping, volume changing, skipping, and quitting.
+
+### 2025-01-18, 5:07 PM - Add back check_frame_info
+check_frame_info was removed somehow, so I added it back in.
+
+### 2025-01-18, 5:34 PM - Remove skip function, change player and main to use interactive player instead
+Remove skip function in player as skipping is now handled by the interactive player, and adapt player and main to use interactive_player instead of play_file.
+
+### 2025-01-18, 5:49 PM - Use queueSongs in main
+Call queueSongs from main for playing the songs in order.
+
+### 2025-01-18, 7:03 PM - Remove skip function, add proper responses to q
+Remove skip function (again), and make playlists stop playing when the user presses q.
+
+### 2025-01-18, 7:15 PM - Make shuffle use interactive_player
+Make the new shuffle function use interactive_player.
+
+### 2025-01-18, 7:39 PM, 7:51 PM - Fix random characters appearing in progress bar
+Fix the random characters appearing at the end of the progress bar, which was due to not ending the string with NULL.
+
+### 2025-01-18, 10:30 PM - Fix write_player, add check_error, fix skipping twice
+Fix write_player by writing only the number of bytes according to the string length, add error checking, and fix how songs are skipped twice whenever e is pressed.
+
+### 2025-01-18, 10:38 PM - Remove get_ functions
+Remove the get_to_player, get_from_player, and get_buff functions as they aren't called.
+
+### 2025-01-18, 10:50 PM - Make player_setup a void and combine it with connect_player
+player_setup was originally an int and returned whether it was the main program or not, but it is now a void since the mpg123 fork will not return. player_setup is combined with connect_player as connect_player is only called by player_setup.
+
+### 2025-01-18, 11:24 PM - Switch to unnamed pipes, add redirection error messages
+Use unnamed pipes instead of named ones so that multiple instances of the program can run at the same time without interfering, and add proper error messages for the redirection.
+
+### 2025-01-18, 11:36 PM - Remove check for player in main.c
+Remove check for player in main.c (as player_setup is now a void).
+
 ## Keith Hah
 
 ### 2025-01-02 - Brief description
