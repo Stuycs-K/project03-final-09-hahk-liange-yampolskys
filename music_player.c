@@ -108,7 +108,8 @@ int interactive_player(char * file_name, char * artist, char * title) {
   tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 
   int paused = 0;
-  char progress[50];
+  char progress[51];
+  progress[sizeof(progress)] = '\0';
   float length = -1;
   int ret = END;
   do {
@@ -158,8 +159,8 @@ int interactive_player(char * file_name, char * artist, char * title) {
         if (length == -1) length = s + sl;
         int is = (int)s;
         int isl = (int)sl;
-        int f = (int)(s / length * sizeof(progress) + .5);
-        for (int j = 0; j < sizeof(progress); j++) progress[j] = j < f ? '#' : '-';
+        int f = (int)(s / length * (sizeof(progress) - 1) + .5);
+        for (int j = 0; j < sizeof(progress) - 1; j++) progress[j] = j < f ? '#' : '-';
         printf("\x1b[1F\x1b[2K\x1b[1F\x1b[2KNow playing: %s - %s [VOLUME: %d%%] %s\n%d:%02d [%s] %d:%02d \n", artist, title, (int)volume, paused ? "[PAUSED]" : "", is/60, is%60, progress, isl/60, isl%60);
       }
     }
