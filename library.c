@@ -17,6 +17,8 @@ void add(struct song_node **library, char *artist, char *title, char*filename) {
     int index;
     if (artist[0] >= 'A' && artist[0] <= 'Z') {
         index = artist[0] - 'A';
+    } else if (artist[0] >= 'a' && artist[0] <= 'z') {
+        index = artist[0] - 'a';
     } else {
         index = 26; // For non-letter artists
     }
@@ -27,6 +29,8 @@ struct song_node *search_song(struct song_node **library, char *artist, char *ti
     int index;
     if (artist[0] >= 'A' && artist[0] <= 'Z') {
         index = artist[0] - 'A';
+    } else if (artist[0] >= 'a' && artist[0] <= 'z') {
+        index = artist[0] - 'a';
     } else {
         index = 26; // For non-letter artists
     }
@@ -37,6 +41,8 @@ struct song_node *search_artist(struct song_node **library, char *artist) {
     int index;
     if (artist[0] >= 'A' && artist[0] <= 'Z') {
         index = artist[0] - 'A';
+    } else if (artist[0] >= 'a' && artist[0] <= 'z') {
+        index = artist[0] - 'a';
     } else {
         index = 26; // For non-letter artists
     }
@@ -44,7 +50,7 @@ struct song_node *search_artist(struct song_node **library, char *artist) {
 }
 
 void print_letter(struct song_node **library, char letter) {
-    int index = (letter >= 'A' && letter <= 'Z') ? letter - 'A' : 26;
+    int index = letter >= 'A' && letter <= 'Z' ? letter - 'A' : letter >= 'a' && letter <= 'z' ? letter - 'a' : 26;
     print_list(library[index]);
 }
 
@@ -142,6 +148,8 @@ int delete_song(struct song_node ** library, char* artist, char* title, char*fil
     int index;
     if (artist[0] >= 'A' && artist[0] <= 'Z') {
         index = artist[0] - 'A';
+    } else if (artist[0] >= 'a' && artist[0] <= 'z') {
+        index = artist[0] - 'a';
     } else {
         index = 26; // For non-letter artists
     }
