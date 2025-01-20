@@ -130,6 +130,9 @@ Use perror to print the mpg123 errors and start them with "Error: ".
 ### 2025-01-20, 11:46 AM - Clean up queueSongs, add newline to Looping message
 Cleaned up queueSongs by removing unnecessary code, added newline to the Looping message.
 
+### 2025-01-20, 3:56 PM - Add option for looping a shuffled playlist (shuffles on every iteration)
+Add new option for repeatedly playing a shuffled version of the playlist (reshuffles when it reaches the end of the playlist).
+
 ## Keith Hah
 
 ### 2025-01-02 - Brief description
