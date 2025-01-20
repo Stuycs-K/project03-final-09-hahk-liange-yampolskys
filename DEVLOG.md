@@ -186,5 +186,8 @@ Fixed save and load playlist function and changed node.c remove node function. A
 ### 2025-01-18, 7:16 P.M - Fixed errors with empty playlist and deleting 
 Modified main.c so user has to create playlist first. Added errors if any input was left blank and tested it.
  
-### 2025-01-19, 6:53 P.M - Fixed playlsit bugs and created loop 
+### 2025-01-19, 6:53 P.M - Fixed playlist bugs and created loop 
 Created function to loop entire playlist. Fixed playlist print order, now is consistent. Added more error prints.
+
+### 2025-01-20, 1:07 A.M - Fixed playlist bugs and made more test cases
+Fixed bug where seg fault if song was not found (function file_exists). Also added case where non-existant songs would be skipped over, so it should work properly now. Also fixed play option, so now it plays the entire playlist.
