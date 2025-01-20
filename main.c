@@ -20,7 +20,7 @@ int main(){
   char input[100];
   struct song_node *curr_song = NULL;
 
-  while(option != 13){
+  while(option != 14){
     printf("\n__________________________\n");
     printf("\nMenu:\n");
     printf("1. Load & view playlist\n");
@@ -33,9 +33,10 @@ int main(){
     printf("8. Play\n");
     printf("9. Shuffle playlist\n"); 
     printf("10. Loop playlist\n"); 
-    printf("11. Create new playlist\n");
-    printf("12. Delete playlist\n");
-    printf("13. Save and exit\n");
+    printf("11. Loop shuffled playlist\n");
+    printf("12. Create new playlist\n");
+    printf("13. Delete playlist\n");
+    printf("14. Save and exit\n");
     printf("Choose an option: ");
 
     if(fgets(input, sizeof(input), stdin)){
@@ -363,6 +364,7 @@ int main(){
         printf("\nERROR: Please load or create a playlist first.\n");
         continue;
       }
+      printf("\nPlaying %s in shuffled order...\n", list_name);
       shufflePlay(library); 
     }
 
@@ -375,7 +377,16 @@ int main(){
       loop_list(library);
     } 
 
-    else if(option == 11){ //create new playlist
+    else if(option == 11){ //loop shuffled playlist
+      if(strlen(list_name) == 0){
+        printf("\nERROR: Please load or create a playlist first.\n");
+        continue;
+      }
+      printf("\nLooping %s in shuffled order...\n", list_name);
+      loop_shuffled_list(library);
+    } 
+
+    else if(option == 12){ //create new playlist
       char new_list[100];
       printf("Enter new playlist name: ");
       if(fgets(new_list, sizeof(new_list), stdin)){
@@ -395,7 +406,7 @@ int main(){
       }    
     }
 
-    else if(option == 12){ //delete playlist of choice
+    else if(option == 13){ //delete playlist of choice
       char deleted_list[100];
       printf("Enter playlist name to delete: ");
       if(fgets(deleted_list, sizeof(deleted_list), stdin)){
@@ -422,7 +433,7 @@ int main(){
       }
     }
 
-    else if(option == 13){ //save and exit
+    else if(option == 14){ //save and exit
       if(strlen(list_name) == 0){
         printf("\nERROR: No playlist to save to. Please load or create a playlist first.\n");
       }

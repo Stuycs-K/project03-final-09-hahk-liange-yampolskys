@@ -56,7 +56,6 @@ void shufflePlay(struct song_node **library) {
             printf("\nERROR: File '%s' for '%s' by '%s' does not exist. Skipping...\n", songArray[i]->filename, songArray[i]->title, songArray[i]->artist);
             continue;
         }
-        printf("Now playing: %s - %s\n", songArray[i]->artist, songArray[i]->title);
         if (interactive_player(songArray[i]->filename, songArray[i]->artist, songArray[i]->title) == QUIT) break;
     }
 }
@@ -96,6 +95,39 @@ void loop_list(struct song_node **library){
             if(interactive_player(songArray[i]->filename, songArray[i]->artist, songArray[i]->title) == QUIT){
                 return;
             }
+        }
+    }
+}
+
+//play songs in shuffled order repeatedly
+void loop_shuffled_list(struct song_node **library) {
+    struct song_node *songArray[1000];
+    int count = 0;
+
+    for (int i = 0; i < 27; i++) {
+        struct song_node *current = library[i];
+        while (current) {
+            songArray[count++] = current;
+            current = current->next;
+        }
+    }
+
+    if (count == 0) {
+        printf("No songs available.\n");
+        return;
+    }
+
+    signal(SIGINT, sighandler);
+
+    while (1) {
+        fisherYatesShuffle(songArray, count);
+
+        for (int i = 0; i < count; i++) {
+            if(!file_exists(songArray[i]->filename)){
+                printf("\nERROR: File '%s' for '%s' by '%s' does not exist. Skipping...\n", songArray[i]->filename, songArray[i]->title, songArray[i]->artist);
+                continue;
+            }
+            if (interactive_player(songArray[i]->filename, songArray[i]->artist, songArray[i]->title) == QUIT) return;
         }
     }
 }
