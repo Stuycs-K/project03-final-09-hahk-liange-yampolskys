@@ -10,6 +10,11 @@
 #include "library.h"
 #include "file.h"
 
+int file_exists(char *filename){
+  struct stat stat_buffer;
+  return(stat(filename, &stat_buffer) == 0);
+}
+
 // save_library(library, "text.txt")
 void save_library(struct song_node ** library, char *filename){
   int musicFile = open(filename, O_WRONLY | O_CREAT| O_TRUNC, 0644);
@@ -54,25 +59,30 @@ void load_library(struct song_node ** library, char *filename){
       char *title = strsep(&line_pointer, "|");
       char *filename = strsep(&line_pointer, "|");
       if(artist && title && filename){
-        while(*artist == ' '){
-          artist++;
+        if(!file_exists(filename)){
+          printf("ERROR: File '%s' for '%s' by '%s' does not exist in this playlist.\n", filename, title, artist);
         }
-        while(*title == ' '){
-          title++;
-        }
-        while(*filename == ' '){
-          filename++;
-        }
-        if(artist[0] >= 'A' && artist[0] <= 'Z'){
-          list = artist[0] - 'A';
-        }
-        else if(artist[0] >= 'a' && artist[0] <= 'z'){
-          list = artist[0] - 'a';
-        } 
         else{
-          list = 26;
+          while(*artist == ' '){
+            artist++;
+          }
+          while(*title == ' '){
+            title++;
+          }
+          while(*filename == ' '){
+            filename++;
+          }
+          if(artist[0] >= 'A' && artist[0] <= 'Z'){
+            list = artist[0] - 'A';
+          }
+          else if(artist[0] >= 'a' && artist[0] <= 'z'){
+            list = artist[0] - 'a';
+          } 
+          else{
+            list = 26;
+          }
+          library[list] = insert_alph(library[list], artist, title, filename);
         }
-        library[list] = insert_alph(library[list], artist, title, filename);
       }
       index = 0;
     }

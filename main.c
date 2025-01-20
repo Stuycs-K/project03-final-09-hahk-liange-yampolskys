@@ -203,6 +203,9 @@ int main(){
         if(song != NULL){
           interactive_player(song->filename, song->artist, song->title);
         } 
+        else if(!file_exists(song->filename)){
+          printf("\nERROR: File '%s' does not exist.\n", song->filename);
+        }
         else{
           printf("\nERROR: Song not found.\n");
         }
@@ -214,11 +217,40 @@ int main(){
         printf("\nERROR: Please load or create a playlist first.\n");
         continue;
       }
-      if(curr_song){
-        loop(library, curr_song);
+      char artist[100];
+      char title[100];
+      char filename[100];
+      printf("Enter artist: ");
+      if(fgets(artist, sizeof(artist), stdin)){
+        int length = strlen(artist);
+        if(length > 0 && artist[length - 1] == '\n'){
+          artist[length - 1] = '\0';
+        }
       }
+      printf("Enter title: ");
+      if(fgets(title, sizeof(title), stdin)){
+        int length = strlen(title);
+        if(length > 0 && title[length - 1] == '\n'){
+          title[length - 1] = '\0';
+        }
+      }
+      printf("Enter filename: ");
+      if(fgets(filename, sizeof(filename), stdin)){
+          int length = strlen(filename);
+          if(length > 0 && filename[length-1] == '\n'){
+              filename[length-1] = '\0';
+          }
+      }
+      if(strlen(artist) == 0 || strlen(title) == 0 || strlen(filename) == 0){
+        printf("\nERROR: Field(s) cannot be blank.\n");
+        continue;
+      }
+      struct song_node *song = search_song(library, artist, title, filename);
+      if(!song){
+        printf("\nERROR: Song not found.\n");
+      } 
       else{
-        printf("\nERROR: No songs to loop.\n");
+        loop(library, song);
       }
     } 
 
@@ -308,15 +340,18 @@ int main(){
         printf("\nERROR: Please load or create a playlist first.\n");
         continue;
       }
-      curr_song = NULL;
+      struct song_node *queue = NULL;
       for(int i = 0; i < 27; i++){
-        if(library[i]){
-          curr_song = library[i]; 
-          break;
+        struct song_node *curr = library[i];
+        while(curr){
+          addToQueue(&queue, curr);
+          curr = curr->next;
         }
       }
-      if(curr_song){
-        queueSongs(library, curr_song);
+      if(queue){
+        printf("\nPlaying playlist '%s'...\n", list_name);
+        queueSongs(library, queue);
+        free_list(queue); //frees after playback
       }
       else{
         printf("\nERROR: No songs left to play.\n");

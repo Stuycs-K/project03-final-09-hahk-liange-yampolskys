@@ -1,5 +1,5 @@
 #include "music_player.h"
-
+#include "file.h"
 int to_player;
 int from_player;
 char buff[1000];
@@ -96,6 +96,11 @@ char * check_error(char * b) {
 }
 
 int interactive_player(char * file_name, char * artist, char * title) {
+  if(!file_exists(file_name)){
+    printf("\nERROR: File '%s' does not exist.\n", file_name);
+    return -1; 
+  }
+
   printf("[ ] pause/resume, [a/d] jump left/right, [0-9] jump to position, [w/s] increase/decrease volume, [e] skip, [q] quit\nNow playing: %s - %s\n\n", artist, title);
   play_file(file_name);
 

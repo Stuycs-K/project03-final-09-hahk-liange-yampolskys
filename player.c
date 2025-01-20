@@ -7,6 +7,7 @@
 #include "node.h"
 #include "library.h"
 #include "music_player.h"
+#include "file.h"
 
 //handle signals
 void sighandler(int signo) {
@@ -51,6 +52,10 @@ void shufflePlay(struct song_node **library) {
     signal(SIGINT, sighandler);
 
     for (int i = 0; i < count; i++) {
+        if(!file_exists(songArray[i]->filename)){
+            printf("\nERROR: File '%s' for '%s' by '%s' does not exist. Skipping...\n", songArray[i]->filename, songArray[i]->title, songArray[i]->artist);
+            continue;
+        }
         printf("Now playing: %s - %s\n", songArray[i]->artist, songArray[i]->title);
         if (interactive_player(songArray[i]->filename, songArray[i]->artist, songArray[i]->title) == QUIT) break;
     }
@@ -58,6 +63,10 @@ void shufflePlay(struct song_node **library) {
 
 //play the same song on repeat
 void loop(struct song_node **library, struct song_node *song) {
+    if(!file_exists(song->filename)){
+        printf("\nERROR: File '%s' for '%s' by '%s' does not exist.\n", song->filename, song->title, song->artist);
+        return;
+    }
     signal(SIGINT, sighandler);
 
     while (1) {
@@ -97,8 +106,15 @@ void queueSongs(struct song_node **library, struct song_node *queueHead) {
     signal(SIGINT, sighandler);
 
     while (current) {
-        if (interactive_player(current->filename, current->artist, current->title) == QUIT) break;
-        current = current->next;
+        if(!file_exists(current->filename)){
+            printf("\nERROR: File '%s' for '%s' by '%s' does not exist. Skipping...\n", current->filename, current->title, current->artist);
+            current = current->next;
+            continue;
+        }
+        else{
+            if (interactive_player(current->filename, current->artist, current->title) == QUIT) break;
+                current = current->next;
+        }
     }
 }
 
