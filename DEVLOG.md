@@ -186,3 +186,5 @@ Fixed save and load playlist function and changed node.c remove node function. A
 ### 2025-01-18, 7:16 P.M - Fixed errors with empty playlist and deleting 
 Modified main.c so user has to create playlist first. Added errors if any input was left blank and tested it.
  
+### 2025-01-19, 6:53 P.M - Fixed playlsit bugs and created loop 
+Created function to loop entire playlist. Fixed playlist print order, now is consistent. Added more error prints.
