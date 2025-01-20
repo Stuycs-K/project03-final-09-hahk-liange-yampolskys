@@ -371,7 +371,7 @@ int main(){
         printf("\nERROR: Please load or create a playlist first.\n");
         continue;
       }
-      printf("\nLooping %s...", list_name);
+      printf("\nLooping %s...\n", list_name);
       loop_list(library);
     } 
 

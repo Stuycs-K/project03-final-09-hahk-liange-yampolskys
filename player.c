@@ -86,7 +86,7 @@ void loop_list(struct song_node **library){
             curr = curr->next;
         }
     }
-    
+
     if(count == 0){
         printf("\nERROR: No songs to loop.\n");
         return;
@@ -108,13 +108,10 @@ void queueSongs(struct song_node **library, struct song_node *queueHead) {
     while (current) {
         if(!file_exists(current->filename)){
             printf("\nERROR: File '%s' for '%s' by '%s' does not exist. Skipping...\n", current->filename, current->title, current->artist);
-            current = current->next;
-            continue;
-        }
-        else{
+        } else{
             if (interactive_player(current->filename, current->artist, current->title) == QUIT) break;
-                current = current->next;
         }
+        current = current->next;
     }
 }
 
@@ -140,7 +137,7 @@ void addToQueue(struct song_node **queueHead, struct song_node *newSong) {
 
     if (!*queueHead) {
         *queueHead = songToAdd;
-    } 
+    }
     else {
         while (current->next) {
             current = current->next;
