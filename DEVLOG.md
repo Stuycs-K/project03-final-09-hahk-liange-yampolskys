@@ -121,11 +121,14 @@ Use unnamed pipes instead of named ones so that multiple instances of the progra
 ### 2025-01-18, 11:36 PM - Remove check for player in main.c
 Remove check for player in main.c (as player_setup is now a void).
 
-### 2025-01-19, 10：53 AM - Make lowercase artists still go in alpabetical categories
+### 2025-01-19, 10:53 AM - Make lowercase artists still go in alpabetical categories
 Make artists starting with lowercase letters go into the alphabetical buckets instead of the symbols one.
 
 ### 2025-01-19, 11:11 AM - Use perror for mpg123 error
 Use perror to print the mpg123 errors and start them with "Error: ".
+
+### 2025-01-20, 11:46 AM - Clean up queueSongs, add newline to Looping message
+Cleaned up queueSongs by removing unnecessary code, added newline to the Looping message.
 
 ## Keith Hah
 
