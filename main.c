@@ -287,11 +287,14 @@ int main(){
       if(strlen(artist) == 0 || strlen(title) == 0 || strlen(filename) == 0){
         printf("\nERROR: Field(s) cannot be blank.\n");
       } 
-      else{
-        add(library, artist, title, filename);
-        save_library(library, list_name);
-        printf("\nSong added.\n");
+      if(!file_exists(filename)){
+        printf("\nERROR: The file '%s' does not exist.\n", filename);
+        continue;
       }
+      add(library, artist, title, filename);
+      save_library(library, list_name);
+      printf("\nSong added.\n");
+      
     }
 
 
@@ -327,13 +330,17 @@ int main(){
       if(strlen(artist) == 0 || strlen(title) == 0 || strlen(filename) == 0){
         printf("\nERROR: Field(s) cannot be blank.\n");
       } 
-      else{
+      if(!search_song(library, artist, title, filename)){
+        printf("\nERROR: Song does not exist.\n", title, artist, filename);
+        continue;
+      }
+    
       delete_song(library, artist, title, filename);
       save_library(library, list_name);
       reset(library);
       load_library(library, list_name);
       printf("\nSong removed.\n");
-      }
+      
     }
 
     else if(option == 8){ //play
