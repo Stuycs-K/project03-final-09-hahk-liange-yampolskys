@@ -2,12 +2,12 @@
 # Music Library
 
 ### GROUP NAME HERE
-### Group id: 8
+
 Group Members: Keith Hah, Edmund Liang, Stella Yampolsky
 
 ### Project Description:
 
-The project is a music player with features for making and handling playlists. The program will be able manage a music library to add, remove, play, skip, and loop audio files, and save the library data into a (binary?) file.
+The project is a music player with features for making and handling songs and playlists. The program will be able manage a music library to add, remove, play, skip, and loop audio files/playlists, and save the library data into a text file.
 
 
 ### Instructions:
@@ -18,4 +18,4 @@ The user will need to install mpg123 and run the program executable.
 
 How does the user interact with this program?
 
-The user will use the terminal to interact with the program.
+The user will use the terminal to interact with the program through the user menu. 
