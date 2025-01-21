@@ -331,7 +331,7 @@ int main(){
         printf("\nERROR: Field(s) cannot be blank.\n");
       } 
       if(!search_song(library, artist, title, filename)){
-        printf("\nERROR: Song does not exist.\n", title, artist, filename);
+        printf("\nERROR: Song does not exist.\n");
         continue;
       }
     
