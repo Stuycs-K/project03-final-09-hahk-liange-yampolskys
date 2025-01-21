@@ -6,8 +6,9 @@
 Group Members: Keith Hah, Edmund Liang, Stella Yampolsky
 
 ### Project Description:
-
 The project is a music player with features for making and handling songs and playlists. The program will be able manage a music library to add, remove, play, pause, skip, loop, etc. audio files/playlists, and save the library data into a text file.
+
+Link to video demo: https://drive.google.com/file/d/1-HgVzrqrCjDL2uFmNkwanLEm58IquNYX/view?usp=sharing
 
 ### Instructions:
 
