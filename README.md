@@ -10,6 +10,8 @@ The project is a music player with features for making and handling songs and pl
 
 Link to video demo: https://drive.google.com/file/d/1-HgVzrqrCjDL2uFmNkwanLEm58IquNYX/view?usp=sharing
 
+Backup link (nycstudents account): https://drive.google.com/file/d/1SWei-3HoPr84b-1RKi5TJNw_mjfw9uxM/view?usp=sharing 
+
 ### Instructions:
 
 How does the user install/compile/run the program?
