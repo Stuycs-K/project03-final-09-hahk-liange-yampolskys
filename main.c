@@ -200,15 +200,20 @@ int main(){
         printf("\nERROR: Field(s) cannot be blank.\n");
       } 
       else{
-        struct song_node *song = search_song(library, artist, title, filename);
-        if(song != NULL){
-          interactive_player(song->filename, song->artist, song->title);
-        } 
-        else if(!file_exists(song->filename)){
-          printf("\nERROR: File '%s' does not exist.\n", song->filename);
+        int index;
+        if(artist[0] >= 'A' && artist[0] <= 'Z'){
+          index = artist[0] - 'A';
         }
         else{
+          index = 26;
+        }
+
+        struct song_node *song = find_song(library[index], artist, title, filename);
+        if(song == NULL){
           printf("\nERROR: Song not found.\n");
+        } 
+        else{
+          interactive_player(song->filename, song->artist, song->title);
         }
       }
     }

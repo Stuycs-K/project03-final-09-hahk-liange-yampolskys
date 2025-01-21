@@ -61,11 +61,9 @@ struct song_node * find_song(struct song_node * list, char *artist, char *title,
             if(strcmp(list->artist, artist) == 0 && strcmp(list->title, title) == 0 &&  strcmp(list->filename, filename) == 0){
                 return list;
             }
-            list = list->next;
         printf("reached end of pass\n");
         list = list->next;
     }
-    
     return NULL;
 }
 
